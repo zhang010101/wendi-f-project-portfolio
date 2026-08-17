@@ -49,6 +49,24 @@ export type Project = {
         video: string;
       };
     };
+    systemsThinking?: {
+      heading: string;
+      intro: string;
+      panelWidths: {
+        paragraph: string;
+        images: { src: string; caption: string }[];
+      };
+      structure: {
+        paragraph: string;
+        image: string;
+        caption: string;
+      };
+    };
+    impact?: {
+      heading: string;
+      items: { title: string; description: string }[];
+      note: string;
+    };
   };
 };
 
@@ -193,6 +211,47 @@ export const projects: Project[] = [
           image: "/images/pr-upload-success-grid.png",
           video: "/videos/pr-upload-demo.mp4",
         },
+      },
+      systemsThinking: {
+        heading: "系统性思维佐证",
+        intro:
+          "好的界面设计，不只是把元素摆对位置，还要经得起“各种屏幕配置组合起来还合理吗”这种追问。",
+        panelWidths: {
+          paragraph:
+            "PR 的工作区可以同时打开文件夹树、文档表格、筛选面板、文件预览——面板数量和组合是可变的。为此我们为每个面板都定义了最小宽度和默认占比：文档列表区（Records area）最小 422px，详情面板（Detail view）最小 400px、默认占工作区三分之一，筛选面板（Filter area）默认占四分之一，文件预览（File viewer）最小 560px。不是“看起来差不多就行”，而是有明确的数值约束，保证任意面板组合下界面都不会挤坏。",
+          images: [
+            {
+              src: "/images/pr-panel-widths-default.png",
+              caption: "默认三栏布局：Filter area / Records area / Detail view 的最小宽度与默认占比",
+            },
+            {
+              src: "/images/pr-panel-widths-fileviewer.png",
+              caption: "打开文件预览（File viewer）时，各面板的最小宽度约束",
+            },
+          ],
+        },
+        structure: {
+          paragraph:
+            "另一处系统性思维的体现，是文件夹结构的信息架构：Abschnitt（区段）→ House（栋）→ Floor（楼层）的三级树状结构，直接贴合建筑工程项目本身的空间层级，而不是套用一个通用的“文件夹/子文件夹”模板。",
+          image: "/images/pr-structure-tree.png",
+          caption: "Structure 树状结构：Abschnitt → House → Floor，贴合建筑工程项目的空间层级",
+        },
+      },
+      impact: {
+        heading: "影响力与结果",
+        items: [
+          {
+            title: "定性信号",
+            description:
+              "2026 年 7 月，客户方 Wolfgang Schmid 主动写信给 Herr Ripperda，申请提前使用 PR 的早鸟资格——在产品还处于分阶段交付节奏里的时候，已经有真实客户主动来要。",
+          },
+          {
+            title: "可用性提升",
+            description:
+              "Upload 流程经过两轮测试迭代，从第一轮多个参与者卡在属性填写和上传流程，到第二轮 4/4 参与者顺利完成核心任务（具体数据见「深度案例主线」板块）。",
+          },
+        ],
+        note: "后续可补充的量化数据（暂不在本轮案例里，留作以后有产品埋点数据后再加）：文档处理/查找时间缩短了多少、上线后的采用率。",
       },
     },
   },

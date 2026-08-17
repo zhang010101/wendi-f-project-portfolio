@@ -14,6 +14,7 @@
   --color-accent: #ffd24c;
   --color-border: #2a2a2a;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
 body {
@@ -31,5 +32,52 @@ body {
 @media (min-width: 768px) {
   .content-wrap {
     padding-inline: 2.5rem;
+  }
+}
+
+/* PR 案例页专属 token —— 蓝图/技术图纸语言，仅在 .case-study 作用域内生效，
+   不影响站点其它页面的暖色 surface/border。 */
+.case-study {
+  --pr-cyan: #6fb7da;
+  --pr-panel: #0f151b;
+  --pr-line: #24313b;
+  --pr-ink: #d7e4ec;
+}
+
+.dimension-rule {
+  position: relative;
+  height: 1px;
+  background: var(--pr-line);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dimension-rule::before,
+.dimension-rule::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: var(--pr-line);
+}
+
+.dimension-rule::before {
+  left: 0;
+}
+
+.dimension-rule::after {
+  right: 0;
+}
+
+.dimension-rule.is-visible {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dimension-rule {
+    transform: scaleX(1);
+    transition: none;
   }
 }
