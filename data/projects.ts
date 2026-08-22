@@ -16,6 +16,18 @@ export type Project = {
       paragraphs: string[];
       systems: { tool: string; use: string }[];
     };
+    personas?: {
+      heading: string;
+      intro: string;
+      entryLabel: string;
+      items: {
+        title: string;
+        context: string;
+        painPoint: string;
+        goal: string;
+        docs?: string;
+      }[];
+    };
     systemDesign?: {
       heading: string;
       intro: string[];
@@ -27,6 +39,11 @@ export type Project = {
       featuresHeading: string;
       features: { name: string; description: string }[];
       closing: string;
+    };
+    roles?: {
+      heading: string;
+      intro: string;
+      items: { title: string; description: string }[];
     };
     deepDive?: {
       heading: string;
@@ -109,6 +126,69 @@ export const projects: Project[] = [
           { tool: "PX", use: "图纸" },
         ],
       },
+      personas: {
+        heading: "先搞清楚 8 个人分别要什么",
+        intro:
+          "动手设计之前，我们先梳理了会用到 PR 的 8 类角色。素材来自和客户经理、专业顾问、销售等客户接触多、有行业背景的同事的访谈，也访谈了部分真实用户——不是凭空猜测的画像。这份梳理后来直接喂给了下面的系统设计和角色深挖。",
+        entryLabel: "查看完整的 8 个角色 Personas →",
+        items: [
+          {
+            title: "Projektleiter (PL) 项目负责人",
+            context: "办公室 · Desktop",
+            painPoint: "数据碎片化，变更版本难追踪",
+            goal: "集中管理文档、设定权限、快速查找与分发、自动化通知",
+            docs: "结算、合同、往来邮件",
+          },
+          {
+            title: "Bauleiter (BL) 现场负责人",
+            context: "工地 · Tablet",
+            painPoint: "现场时间紧迫，找文档不能等",
+            goal: "快速查找/打开文档核实信息，直接录入专业模块数据",
+            docs: "图纸、发票、往来邮件",
+          },
+          {
+            title: "Architekt / Planer 建筑师/专业规划师",
+            context: "办公室 · Desktop",
+            painPoint: "版本管理混乱，跨专业协作容易出错",
+            goal: "上传图纸（单个/批量），核对版本，批量上传自动生成版本号并通知",
+            docs: "图纸",
+          },
+          {
+            title: "Polier 工长",
+            context: "工地 · Tablet",
+            painPoint: "不熟悉软件操作，现场访问要求快",
+            goal: "用 PR 快速打开图纸，易用性优先",
+            docs: "图纸、BIM 模型",
+          },
+          {
+            title: "Subunternehmer 分包商",
+            context: "办公室/工地 · Desktop/Tablet",
+            painPoint: "文档要传给总包（GU），沟通成本高",
+            goal: "上传要求的文档到指定文件夹",
+            docs: "图纸、进度计划",
+          },
+          {
+            title: "Sekretariat 行政助理",
+            context: "办公室 · Desktop",
+            painPoint: "要管理的文档种类多、量大",
+            goal: "归档、分发文档",
+            docs: "几乎所有类型",
+          },
+          {
+            title: "Bauherr 业主/发包方",
+            context: "办公室 · Desktop（外部用户，只能看部分文档）",
+            painPoint: "非技术背景，需要清晰呈现",
+            goal: "看项目全局概览（进度/成本/风险）",
+            docs: "日报、缺陷统计、往来邮件、审批文件",
+          },
+          {
+            title: "Behördenvertreter / Gutachter 监管方/审查人员",
+            context: "办公室 · Desktop",
+            painPoint: "需要能追溯所有变更，以保证审查结论准确",
+            goal: "快速访问相关数据",
+          },
+        ],
+      },
       systemDesign: {
         heading: "系统设计概览",
         intro: [
@@ -132,6 +212,11 @@ export const projects: Project[] = [
             description:
               "整个模块按 User Story Map 拆成 Volumen 1/2/3 逐步上线，不是一次性设计到位再交付。",
           },
+          {
+            title: "权限：方向定了，特意不做",
+            description:
+              "业主、分包商这类外部角色只应该看到部分文档——这一点在角色梳理阶段就很明确。权限的设计方向也在早期讨论清楚了：按过滤器把权限绑定给角色，多个条件之间用“或”连接。但把权限系统真正做出来，被主动排进了 v1 范围之外，先把核心的文档流转和交付节奏做稳，这也是一种克制。",
+          },
         ],
         featuresHeading: "已上线的核心功能",
         features: [
@@ -142,8 +227,16 @@ export const projects: Project[] = [
             name: "文档查看器 Viewer",
             description: "支持 PDF、图片、ZIP、360 全景等多种预览",
           },
+          {
+            name: "筛选与搜索 Filter & Search",
+            description: "多维度组合筛选（AND/OR），支持全文搜索及在当前筛选结果内二次搜索",
+          },
           { name: "Dashboard", description: "项目文档总览、按类型/公司筛选统计" },
           { name: "文件夹结构 Folder", description: "自定义文件夹树，支持拖拽整理" },
+          {
+            name: "标记删除 Delete",
+            description: "v1 只做标记删除、不做真删除，给误删留一道安全垫",
+          },
           {
             name: "跨模块集成",
             description: "与 AppBuilder、PX 等模块打通，文档自动同步",
@@ -151,6 +244,23 @@ export const projects: Project[] = [
         ],
         closing:
           "跨模块集成不是一句“做了 API 对接”就能说清楚的。比如 AppBuilder 里现场检查添加的照片同步到 PR 时，“谁上传的”“谁创建的”这两个字段在跨模块场景下要怎么定义都需要单独澄清——细节多到超出这个板块要展开的范围，只在这里点一句。",
+      },
+      roles: {
+        heading: "这套系统对谁改变了什么",
+        intro:
+          "上面的协作流程图，展示的是内部角色之间文档怎么流转。但 PR 还要服务两类容易被产品设计忽略的角色——项目之外的人。",
+        items: [
+          {
+            title: "Bauherr（业主/发包方）",
+            description:
+              "作为外部投资方，Bauherr 没有工程背景，只想清楚地知道进度、成本、风险是否可控，不想被拽进内部协作的细节里。“只给业主看该看的部分”这个诉求，在角色梳理阶段就很明确——也是上面“权限：方向定了，特意不做”这个判断的直接来源：方向已经定了，只是还没上线。",
+          },
+          {
+            title: "Behördenvertreter / Gutachter（监管方/审查人员）",
+            description:
+              "审查人员最在意的是所有变更能不能追溯，好让审查结论站得住脚。这个需求 PR 已经在用——每份文档的详情面板里都带着一组不可编辑的时间与操作人字段（上传/创建/最后修改的时间和人，以及文档版本）。这套字段设计当初不是专门为审查场景做的，却直接回应了这个角色最核心的诉求。",
+          },
+        ],
       },
       deepDive: {
         heading: "深度案例主线 —— Upload 可用性测试迭代",

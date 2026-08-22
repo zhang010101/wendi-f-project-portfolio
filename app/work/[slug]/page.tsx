@@ -6,6 +6,7 @@ import TitleBlock from "@/components/case-study/TitleBlock";
 import DrawingFrame from "@/components/case-study/DrawingFrame";
 import SheetHeading from "@/components/case-study/SheetHeading";
 import DimensionRule from "@/components/case-study/DimensionRule";
+import Link from "next/link";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -116,11 +117,31 @@ export default async function CaseDetailPage({
               </section>
             )}
 
-            {project.caseStudy.systemDesign && (
+            {project.caseStudy.personas && (
               <section>
                 <DimensionRule />
                 <SheetHeading
                   sheet="02"
+                  label="Personas"
+                  heading={project.caseStudy.personas.heading}
+                />
+                <p className="mt-6 max-w-2xl text-muted">
+                  {project.caseStudy.personas.intro}
+                </p>
+                <Link
+                  href={`/work/${slug}/personas`}
+                  className="mt-6 inline-block font-mono text-sm text-[var(--pr-cyan)] hover:underline"
+                >
+                  {project.caseStudy.personas.entryLabel}
+                </Link>
+              </section>
+            )}
+
+            {project.caseStudy.systemDesign && (
+              <section>
+                <DimensionRule />
+                <SheetHeading
+                  sheet="03"
                   label="System"
                   heading={project.caseStudy.systemDesign.heading}
                 />
@@ -198,11 +219,40 @@ export default async function CaseDetailPage({
               </section>
             )}
 
+            {project.caseStudy.roles && (
+              <section>
+                <DimensionRule />
+                <SheetHeading
+                  sheet="04"
+                  label="People"
+                  heading={project.caseStudy.roles.heading}
+                />
+                <p className="mt-6 max-w-2xl text-muted">
+                  {project.caseStudy.roles.intro}
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {project.caseStudy.roles.items.map((item) => (
+                    <div
+                      key={item.title}
+                      className="border border-[var(--pr-line)] bg-[var(--pr-panel)] p-5"
+                    >
+                      <p className="font-semibold text-primary">
+                        {item.title}
+                      </p>
+                      <p className="mt-2 text-sm text-muted">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
             {project.caseStudy.deepDive && (
               <section>
                 <DimensionRule />
                 <SheetHeading
-                  sheet="03"
+                  sheet="05"
                   label="Case Study"
                   heading={project.caseStudy.deepDive.heading}
                 />
@@ -330,7 +380,7 @@ export default async function CaseDetailPage({
               <section>
                 <DimensionRule />
                 <SheetHeading
-                  sheet="04"
+                  sheet="06"
                   label="Spec"
                   heading={project.caseStudy.systemsThinking.heading}
                 />
@@ -401,7 +451,7 @@ export default async function CaseDetailPage({
               <section>
                 <DimensionRule />
                 <SheetHeading
-                  sheet="05"
+                  sheet="07"
                   label="Results"
                   heading={project.caseStudy.impact.heading}
                 />
