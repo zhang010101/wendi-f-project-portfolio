@@ -23,6 +23,8 @@ export type Project = {
       items: {
         title: string;
         context: string;
+        zone: "office" | "site" | "both";
+        photo: string;
         painPoint: string;
         goal: string;
         docs?: string;
@@ -135,6 +137,8 @@ export const projects: Project[] = [
           {
             title: "Projektleiter (PL) 项目负责人",
             context: "办公室 · Desktop",
+            zone: "office",
+            photo: "/images/personas/pl.jpg",
             painPoint: "数据碎片化，变更版本难追踪",
             goal: "集中管理文档、设定权限、快速查找与分发、自动化通知",
             docs: "结算、合同、往来邮件",
@@ -142,6 +146,8 @@ export const projects: Project[] = [
           {
             title: "Bauleiter (BL) 现场负责人",
             context: "工地 · Tablet",
+            zone: "site",
+            photo: "/images/personas/bl.jpg",
             painPoint: "现场时间紧迫，找文档不能等",
             goal: "快速查找/打开文档核实信息，直接录入专业模块数据",
             docs: "图纸、发票、往来邮件",
@@ -149,6 +155,8 @@ export const projects: Project[] = [
           {
             title: "Architekt / Planer 建筑师/专业规划师",
             context: "办公室 · Desktop",
+            zone: "office",
+            photo: "/images/personas/architekt.jpg",
             painPoint: "版本管理混乱，跨专业协作容易出错",
             goal: "上传图纸（单个/批量），核对版本，批量上传自动生成版本号并通知",
             docs: "图纸",
@@ -156,6 +164,8 @@ export const projects: Project[] = [
           {
             title: "Polier 工长",
             context: "工地 · Tablet",
+            zone: "site",
+            photo: "/images/personas/polier.jpg",
             painPoint: "不熟悉软件操作，现场访问要求快",
             goal: "用 PR 快速打开图纸，易用性优先",
             docs: "图纸、BIM 模型",
@@ -163,6 +173,8 @@ export const projects: Project[] = [
           {
             title: "Subunternehmer 分包商",
             context: "办公室/工地 · Desktop/Tablet",
+            zone: "both",
+            photo: "/images/personas/subunternehmer.jpg",
             painPoint: "文档要传给总包（GU），沟通成本高",
             goal: "上传要求的文档到指定文件夹",
             docs: "图纸、进度计划",
@@ -170,6 +182,8 @@ export const projects: Project[] = [
           {
             title: "Sekretariat 行政助理",
             context: "办公室 · Desktop",
+            zone: "office",
+            photo: "/images/personas/sekretariat.jpg",
             painPoint: "要管理的文档种类多、量大",
             goal: "归档、分发文档",
             docs: "几乎所有类型",
@@ -177,6 +191,8 @@ export const projects: Project[] = [
           {
             title: "Bauherr 业主/发包方",
             context: "办公室 · Desktop（外部用户，只能看部分文档）",
+            zone: "office",
+            photo: "/images/personas/bauherr.jpg",
             painPoint: "非技术背景，需要清晰呈现",
             goal: "看项目全局概览（进度/成本/风险）",
             docs: "日报、缺陷统计、往来邮件、审批文件",
@@ -184,6 +200,8 @@ export const projects: Project[] = [
           {
             title: "Behördenvertreter / Gutachter 监管方/审查人员",
             context: "办公室 · Desktop",
+            zone: "office",
+            photo: "/images/personas/behoerdenvertreter.jpg",
             painPoint: "需要能追溯所有变更，以保证审查结论准确",
             goal: "快速访问相关数据",
           },
