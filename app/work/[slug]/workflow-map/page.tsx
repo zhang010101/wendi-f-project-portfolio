@@ -91,14 +91,21 @@ const DIAGRAM_STYLES = `
     border: 1px dashed var(--wm-tag-new-border);
   }
 
-  .workflow-map-scope .canvas-scroll { overflow-x: auto; padding-bottom: 8px; }
+  .workflow-map-scope .canvas-break {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    display: flex;
+    justify-content: center;
+  }
 
-  .workflow-map-scope .canvas { position: relative; width: 1780px; height: 1220px; }
+  .workflow-map-scope .canvas { position: relative; width: 1504px; height: 1220px; flex: none; }
 
   .workflow-map-scope svg.connectors {
     position: absolute;
     inset: 0;
-    width: 1780px;
+    width: 1504px;
     height: 1220px;
     pointer-events: none;
   }
@@ -132,7 +139,7 @@ const DIAGRAM_STYLES = `
   .workflow-map-scope .lane-divider {
     position: absolute;
     left: 0;
-    width: 1780px;
+    width: 1504px;
     height: 0;
     border-top: 1px dashed var(--wm-line);
   }
@@ -198,18 +205,6 @@ const DIAGRAM_STYLES = `
   }
 
   .workflow-map-scope .note b { color: var(--wm-ink); font-weight: 600; }
-
-  .workflow-map-scope .wm-footer {
-    max-width: 900px;
-    margin-top: 28px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    line-height: 1.9;
-    color: var(--wm-muted);
-  }
-
-  .workflow-map-scope .wm-footer a { color: var(--wm-muted); }
-  .workflow-map-scope .wm-footer a:hover { color: var(--wm-ink); }
 `;
 
 const DIAGRAM_BODY = `
@@ -230,7 +225,7 @@ const DIAGRAM_BODY = `
     </div>
   </header>
 
-  <div class="canvas-scroll">
+  <div class="canvas-break">
     <div class="canvas">
       <svg class="connectors" viewBox="0 0 1780 1220" role="img" aria-label="8 个角色之间的文档流转路径，虚线为本次新增的连接">
         <defs>
@@ -364,14 +359,6 @@ const DIAGRAM_BODY = `
       </div>
     </div>
   </div>
-
-  <footer class="wm-footer">
-    研究来源：
-    <a href="https://www.bluebeam.com/resources/document-management-for-construction-2026-guide/" target="_blank" rel="noopener">Bluebeam · Document Management for Construction</a> ·
-    <a href="https://archdesk.com/blog/rfi-in-construction-guide" target="_blank" rel="noopener">Archdesk · RFI in Construction Guide</a> ·
-    <a href="https://www.mastt.com/guide/document-control" target="_blank" rel="noopener">Mastt · Construction Document Control</a> ·
-    <a href="https://contractorforeman.com/best-practices-for-document-version-control/" target="_blank" rel="noopener">Contractor Foreman · Document Version Control</a>
-  </footer>
 </div>
 `;
 
