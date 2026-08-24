@@ -1,0 +1,459 @@
+<meta charset="utf-8">
+<title>角色协作全景图</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #faf8f3;
+    --surface: #ffffff;
+    --ink: #201c18;
+    --muted: #6b6459;
+    --line: #d8d2c4;
+    --line-strong: #8f8674;
+    --shadow: 0 1px 2px rgba(32,28,24,0.06), 0 4px 10px rgba(32,28,24,0.05);
+
+    --pl: #b6543f;
+    --bl: #337b74;
+    --arch: #9c7317;
+    --admin: #b56a28;
+    --sub: #4f7a43;
+    --foreman: #33588a;
+    --owner: #6d4f92;
+    --auditor: #4b5760;
+
+    --tag-new-bg: #f1ece1;
+    --tag-new-border: #b6a888;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17140f;
+      --surface: #211d17;
+      --ink: #ece6da;
+      --muted: #a99f8c;
+      --line: #423b30;
+      --line-strong: #6e6350;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 16px rgba(0,0,0,0.35);
+
+      --pl: #d97c65;
+      --bl: #55a89d;
+      --arch: #cfa53c;
+      --admin: #d68f4f;
+      --sub: #7ba869;
+      --foreman: #6f92c4;
+      --owner: #a488c9;
+      --auditor: #8b98a3;
+
+      --tag-new-bg: #2a2419;
+      --tag-new-border: #6e6350;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #17140f;
+    --surface: #211d17;
+    --ink: #ece6da;
+    --muted: #a99f8c;
+    --line: #423b30;
+    --line-strong: #6e6350;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 16px rgba(0,0,0,0.35);
+
+    --pl: #d97c65;
+    --bl: #55a89d;
+    --arch: #cfa53c;
+    --admin: #d68f4f;
+    --sub: #7ba869;
+    --foreman: #6f92c4;
+    --owner: #a488c9;
+    --auditor: #8b98a3;
+
+    --tag-new-bg: #2a2419;
+    --tag-new-border: #6e6350;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 40px 24px 80px;
+  }
+
+  .page {
+    max-width: 1820px;
+    margin: 0 auto;
+  }
+
+  header {
+    max-width: 720px;
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.01em;
+    margin: 8px 0 10px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    align-items: center;
+  }
+
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+
+  .legend-line { width: 28px; height: 0; border-top: 2px solid var(--line-strong); display: inline-block; }
+  .legend-line.dashed { border-top-style: dashed; }
+
+  .legend-swatch {
+    width: 12px; height: 12px; border-radius: 3px;
+    background: var(--tag-new-bg);
+    border: 1px dashed var(--tag-new-border);
+  }
+
+  .canvas-scroll {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .canvas {
+    position: relative;
+    width: 1780px;
+    height: 1220px;
+  }
+
+  svg.connectors {
+    position: absolute;
+    inset: 0;
+    width: 1780px;
+    height: 1220px;
+    pointer-events: none;
+  }
+
+  .lane-label {
+    position: absolute;
+    left: 0;
+    width: 210px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lane-chip {
+    width: 6px;
+    align-self: stretch;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .lane-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .lane-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .lane-divider {
+    position: absolute;
+    left: 0;
+    width: 1780px;
+    height: 0;
+    border-top: 1px dashed var(--line);
+  }
+
+  .new-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--tag-new-bg);
+    border: 1px solid var(--tag-new-border);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .box {
+    position: absolute;
+    width: 200px;
+    height: 64px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line-strong);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+
+  .box.q {
+    border-left: 3px dashed var(--line-strong);
+    border-style: dashed;
+    color: var(--muted);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .note {
+    position: absolute;
+    width: 236px;
+    background: var(--tag-new-bg);
+    border: 1px dashed var(--tag-new-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .note .note-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--owner);
+    margin-bottom: 4px;
+  }
+
+  .note b { color: var(--ink); font-weight: 600; }
+
+  footer {
+    max-width: 900px;
+    margin-top: 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  a:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--owner);
+    outline-offset: 2px;
+  }
+</style>
+
+<div class="page">
+  <header>
+    <p class="eyebrow">PR · Document Workflow</p>
+    <h1>角色协作全景图</h1>
+    <p class="lede">
+      在原有的 6 条内部角色泳道基础上，补充了 <b>Bauherr（业主/发包方）</b>与
+      <b>Behördenvertreter / Gutachter（监管方/审查人员）</b>两条外部角色泳道，
+      并结合建筑/基建行业文档管理的标准实践，为两处流程缺口加了研究支撑的注释。
+      泳道结构与原图保持一致，仅补充内容与视觉呈现做了重新设计。
+    </p>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-line"></span>原有流程</span>
+      <span class="legend-item"><span class="legend-line dashed"></span>本次研究新增</span>
+      <span class="legend-item"><span class="legend-swatch"></span>补充注释</span>
+    </div>
+  </header>
+
+  <div class="canvas-scroll">
+    <div class="canvas">
+      <svg class="connectors" viewBox="0 0 1780 1220" role="img" aria-label="8 个角色之间的文档流转路径，虚线为本次新增的连接">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+            <polygon points="0,0 8,4 0,8" fill="var(--line-strong)" />
+          </marker>
+        </defs>
+        <g fill="none" stroke="var(--line-strong)" stroke-width="1.6">
+          <!-- 1. 分发文档(PL) -> 审核文档(BL), same column, vertical -->
+          <path d="M852,257 L852,303" marker-end="url(#arrow)" />
+          <!-- 2. 上传图纸(PR) -> 批量处理 -->
+          <path d="M706,442 L852,442 L852,483" marker-end="url(#arrow)" />
+          <!-- 3. 上传文档(PR) -> 批量处理 -->
+          <path d="M706,528 L852,528 L852,515" marker-end="url(#arrow)" />
+          <!-- 4. 批量处理 -> 审核新文档版本 -->
+          <path d="M952,515 L998,515" marker-end="url(#arrow)" />
+          <!-- 5. 审核新文档版本 -> 归档文档 -->
+          <path d="M1098,547 L1098,663" marker-end="url(#arrow)" />
+          <!-- 6. 上传图纸(PR) -> 打开图纸(工长) -->
+          <path d="M706,442 L730,442 L730,925 L752,925" marker-end="url(#arrow)" />
+          <!-- 7. 分发文档(分包商) -> 记录在专业模块中 -->
+          <path d="M1344,837 L1344,893" marker-end="url(#arrow)" />
+        </g>
+        <g fill="none" stroke="var(--line-strong)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round">
+          <!-- 8. 分发文档(PL) -> 接收概览通知(Bauherr) NEW -->
+          <path d="M852,257 L852,272 L480,272 L480,975 L590,975 L590,993" marker-end="url(#arrow)" />
+          <!-- 9. 归档文档 -> 接收概览通知(Bauherr) NEW -->
+          <path d="M1098,727 L1098,745 L960,745 L960,978 L622,978 L622,993" marker-end="url(#arrow)" />
+          <!-- 10. 审核新文档版本 -> 查看审计记录(Behördenvertreter) NEW -->
+          <path d="M1098,547 L1098,565 L978,565 L978,1085 L852,1085 L852,1103" marker-end="url(#arrow)" />
+          <!-- 11. 记录在专业模块中 -> 访问相关数据(Behördenvertreter) NEW -->
+          <path d="M1344,957 L1344,978 L480,978 L480,1085 L606,1085 L606,1103" marker-end="url(#arrow)" />
+          <!-- 12. 谁可以创建任务？-> 答案注释 NEW -->
+          <path d="M1344,257 L1344,280" marker-end="url(#arrow)" />
+          <!-- 13. 答案注释 -> 接收任务(分包商) NEW -->
+          <path d="M1362,370 L1362,390 L975,390 L975,745 L852,745 L852,773" marker-end="url(#arrow)" />
+        </g>
+      </svg>
+
+      <!-- Lane 1: PL -->
+      <div class="lane-divider" style="top:170px;"></div>
+      <div class="lane-label" style="top:170px; height:110px;">
+        <div class="lane-chip" style="background:var(--pl);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--pl);">Projektleiter</div>
+          <div class="lane-sub">项目负责人 (PL)</div>
+        </div>
+      </div>
+      <div class="box" style="left:260px; top:193px; border-left-color:var(--pl);">权限、设置</div>
+      <div class="box" style="left:506px; top:193px; border-left-color:var(--pl);">搜索文档</div>
+      <div class="box" style="left:752px; top:193px; border-left-color:var(--pl);">分发文档</div>
+
+      <!-- Lane 2: BL -->
+      <div class="lane-divider" style="top:280px;"></div>
+      <div class="lane-label" style="top:280px; height:110px;">
+        <div class="lane-chip" style="background:var(--bl);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--bl);">Bauleiter</div>
+          <div class="lane-sub">工地主管 (BL)</div>
+        </div>
+      </div>
+      <div class="box" style="left:506px; top:303px; border-left-color:var(--bl);">录入专业模块数据</div>
+      <div class="box" style="left:752px; top:303px; border-left-color:var(--bl);">审核文档<br>（文档预览）</div>
+
+      <!-- Lane 3: 建筑师 -->
+      <div class="lane-divider" style="top:390px;"></div>
+      <div class="lane-label" style="top:390px; height:250px;">
+        <div class="lane-chip" style="background:var(--arch);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--arch);">Architekt / Planer</div>
+          <div class="lane-sub">建筑师 / 专业规划师</div>
+        </div>
+      </div>
+      <div class="box" style="left:260px; top:410px; border-left-color:var(--arch);">创建图纸<br>（在专业应用中）</div>
+      <div class="box" style="left:506px; top:410px; border-left-color:var(--arch);">上传图纸<br>（在 PR 中）</div>
+      <div class="box" style="left:260px; top:496px; border-left-color:var(--arch);">创建文档<br>（在专业应用中）</div>
+      <div class="box" style="left:506px; top:496px; border-left-color:var(--arch);">上传文档<br>（在 PR 中）</div>
+      <div class="box" style="left:752px; top:483px; border-left-color:var(--arch);">批量处理<br>（ZIP · 自动填写）</div>
+      <div class="box" style="left:998px; top:483px; border-left-color:var(--arch);">审核新文档版本</div>
+      <div class="note" style="left:998px; top:561px;">
+        <span class="note-tag">研究补充 · 版本控制</span>
+        <b>旧版本自动标记为已取代，不删除</b>，保留可追溯——建筑/基建行业文档控制的标准做法，防止现场用错版本导致返工。
+      </div>
+
+      <!-- Lane 4: 秘书处 -->
+      <div class="lane-divider" style="top:640px;"></div>
+      <div class="lane-label" style="top:640px; height:110px;">
+        <div class="lane-chip" style="background:var(--admin);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--admin);">Sekretariat</div>
+          <div class="lane-sub">秘书处 / 助理（项目管理）</div>
+        </div>
+      </div>
+      <div class="box" style="left:998px; top:663px; border-left-color:var(--admin);">归档文档</div>
+      <div class="box" style="left:1244px; top:663px; border-left-color:var(--admin);">维护文件</div>
+
+      <!-- Lane 5: 分包商 -->
+      <div class="lane-divider" style="top:750px;"></div>
+      <div class="lane-label" style="top:750px; height:110px;">
+        <div class="lane-chip" style="background:var(--sub);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--sub);">Subunternehmer</div>
+          <div class="lane-sub">分包商 / 承包商</div>
+        </div>
+      </div>
+      <div class="box" style="left:752px; top:773px; border-left-color:var(--sub);">接收任务</div>
+      <div class="box" style="left:998px; top:773px; border-left-color:var(--sub);">上传文档</div>
+      <div class="box" style="left:1244px; top:773px; border-left-color:var(--sub);">分发文档</div>
+
+      <!-- Lane 6: 工长 -->
+      <div class="lane-divider" style="top:860px;"></div>
+      <div class="lane-label" style="top:860px; height:110px;">
+        <div class="lane-chip" style="background:var(--foreman);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--foreman);">Polier</div>
+          <div class="lane-sub">工长</div>
+        </div>
+      </div>
+      <div class="box" style="left:752px; top:893px; border-left-color:var(--foreman);">打开图纸</div>
+      <div class="box" style="left:1244px; top:893px; border-left-color:var(--foreman);">记录在专业模块中</div>
+
+      <!-- Lane 7: Bauherr NEW -->
+      <div class="lane-divider" style="top:970px;"></div>
+      <div class="lane-label" style="top:970px; height:110px;">
+        <div class="lane-chip" style="background:var(--owner);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--owner);">Bauherr <span class="new-tag">补充</span></div>
+          <div class="lane-sub">业主 / 发包方</div>
+        </div>
+      </div>
+      <div class="box" style="left:506px; top:993px; border-left-color:var(--owner);">接收概览通知</div>
+      <div class="box" style="left:752px; top:993px; border-left-color:var(--owner);">查看项目全局概览<br>进度 · 成本 · 风险（只读）</div>
+      <div class="box" style="left:998px; top:993px; border-left-color:var(--owner);">审批文件<br>签署往来审批件</div>
+
+      <!-- Lane 8: Behördenvertreter NEW -->
+      <div class="lane-divider" style="top:1080px;"></div>
+      <div class="lane-label" style="top:1080px; height:110px;">
+        <div class="lane-chip" style="background:var(--auditor);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--auditor);">Behördenvertreter <span class="new-tag">补充</span></div>
+          <div class="lane-sub">监管方 / 审查人员</div>
+        </div>
+      </div>
+      <div class="box" style="left:506px; top:1103px; border-left-color:var(--auditor);">访问相关数据<br>只读 · 按项目过滤</div>
+      <div class="box" style="left:752px; top:1103px; border-left-color:var(--auditor);">查看审计记录<br>时间 · 操作人 · 版本历史</div>
+      <div class="lane-divider" style="top:1190px;"></div>
+
+      <!-- floating question + answer -->
+      <div class="box q" style="left:1244px; top:193px;">谁可以创建任务？</div>
+      <div class="note" style="left:1244px; top:280px;">
+        <span class="note-tag">研究补充 · RFI 路由</span>
+        现场角色（BL / 工长 / 分包商）发起 → 路由给建筑师 / PL 处理 → <b>结果记录留痕</b>。参考行业 RFI（Request for Information）模式：问题统一路由给对应审核人，全程可追踪、超时自动升级。
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    研究来源：
+    <a href="https://www.bluebeam.com/resources/document-management-for-construction-2026-guide/" target="_blank" rel="noopener">Bluebeam · Document Management for Construction</a> ·
+    <a href="https://archdesk.com/blog/rfi-in-construction-guide" target="_blank" rel="noopener">Archdesk · RFI in Construction Guide</a> ·
+    <a href="https://www.mastt.com/guide/document-control" target="_blank" rel="noopener">Mastt · Construction Document Control</a> ·
+    <a href="https://contractorforeman.com/best-practices-for-document-version-control/" target="_blank" rel="noopener">Contractor Foreman · Document Version Control</a>
+  </footer>
+</div>
