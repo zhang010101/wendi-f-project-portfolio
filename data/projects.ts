@@ -33,7 +33,6 @@ export type Project = {
     systemDesign?: {
       heading: string;
       intro: string[];
-      functionalMapImage: string;
       storyMapIntro: string;
       storyMapImage: string;
       decisionsIntro: string;
@@ -214,7 +213,6 @@ export const projects: Project[] = [
           "坐在办公室里的项目负责人需要看全局、管权限、追版本；戴着安全帽在工地上的工长，可能只有几十秒时间，用平板打开一张图纸核对现场情况。同一份文档，要在两种完全不同的使用场景里都“好用”——这是 PR 系统设计上最核心的约束。",
           "下面这张图是我们梳理的角色协作流程：项目负责人（PL）、现场负责人（Bauleiter）、建筑师/规划师（Architekt）、分包商（Subunternehmer）、行政助理（Sekretariat）等角色，各自在什么节点介入、文档如何从一个角色流向下一个角色。",
         ],
-        functionalMapImage: "/images/pr-functional-map.png",
         storyMapIntro:
           "理清协作流程之后，我们把整个模块要做的事情用 User Story Map 拆解成 Activities → Steps → Details 三层，再按 P0/P1/P2 分成三个 Release 逐步交付——这也是下面“分阶段交付”这个判断背后具体的规划方式。",
         storyMapImage: "/images/pr-user-story-map.png",

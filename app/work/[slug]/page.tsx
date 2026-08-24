@@ -151,20 +151,18 @@ export default async function CaseDetailPage({
                   ))}
                 </div>
 
-                <DrawingFrame figure={fig(1)} caption="角色协作流程图 Functional Map">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.caseStudy.systemDesign.functionalMapImage}
-                    alt="角色协作流程图"
-                    className="w-full object-cover"
-                  />
-                </DrawingFrame>
+                <Link
+                  href={`/work/${slug}/workflow-map`}
+                  className="mt-6 inline-block font-mono text-sm text-[var(--pr-cyan)] hover:underline"
+                >
+                  查看角色协作全景图（含 Bauherr / Behördenvertreter 补充）→
+                </Link>
 
                 <p className="mt-10 max-w-2xl text-muted">
                   {project.caseStudy.systemDesign.storyMapIntro}
                 </p>
                 <DrawingFrame
-                  figure={fig(2)}
+                  figure={fig(1)}
                   caption="User Story Map —— Activities → Steps → Details，按 P0/P1/P2 分 Release"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -285,7 +283,7 @@ export default async function CaseDetailPage({
                   {project.caseStudy.deepDive.process.images.map((img, i) => (
                     <DrawingFrame
                       key={img.src}
-                      figure={fig(3 + i)}
+                      figure={fig(2 + i)}
                       caption={img.caption}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -313,7 +311,7 @@ export default async function CaseDetailPage({
                     (img, i) => (
                       <DrawingFrame
                         key={img.src}
-                        figure={fig(6 + i)}
+                        figure={fig(5 + i)}
                         caption={img.caption}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -352,7 +350,7 @@ export default async function CaseDetailPage({
                   )}
                 </div>
                 <DrawingFrame
-                  figure={fig(8)}
+                  figure={fig(7)}
                   caption="新建文档流程完成后的文档网格视图"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -363,7 +361,7 @@ export default async function CaseDetailPage({
                   />
                 </DrawingFrame>
                 <DrawingFrame
-                  figure={fig(9)}
+                  figure={fig(8)}
                   caption="操作录屏 —— 新建/上传文档完整流程，73 秒"
                 >
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
@@ -413,7 +411,7 @@ export default async function CaseDetailPage({
                     (img, i) => (
                       <DrawingFrame
                         key={img.src}
-                        figure={fig(10 + i)}
+                        figure={fig(9 + i)}
                         caption={img.caption}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -433,7 +431,7 @@ export default async function CaseDetailPage({
                   )}
                 </p>
                 <DrawingFrame
-                  figure={fig(12)}
+                  figure={fig(11)}
                   caption={project.caseStudy.systemsThinking.structure.caption}
                   className="max-w-md"
                 >
