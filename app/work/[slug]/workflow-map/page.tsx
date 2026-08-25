@@ -230,53 +230,71 @@ const DIAGRAM_STYLES = `
   }
 
   .workflow-map-scope .note b { color: var(--wm-ink); font-weight: 600; }
+
+  .workflow-map-scope .variant-header { max-width: 720px; margin: 72px 0 28px; }
+
+  .workflow-map-scope .variant-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 8px 0 10px;
+    color: var(--wm-ink);
+  }
+
+  .workflow-map-scope .stage-axis { position: relative; width: 1504px; height: 56px; margin-bottom: 14px; }
+
+  .workflow-map-scope .stage-pill {
+    position: absolute;
+    top: 0;
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--wm-status-bg);
+    border: 1px solid var(--wm-status-border);
+    color: var(--wm-status-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  .workflow-map-scope .stage-arrow {
+    position: absolute;
+    top: 8px;
+    font-size: 16px;
+    color: var(--wm-line-strong);
+  }
 `;
 
-const DIAGRAM_BODY = `
-<div class="wm-page">
-  <header class="wm-header">
-    <p class="eyebrow">PR · Document Workflow</p>
-    <h1>角色协作全景图</h1>
-    <p class="lede">
-      在原有的 6 条内部角色泳道基础上，补充了 <b>Bauherr（业主/发包方）</b>与
-      <b>Behördenvertreter / Gutachter（监管方/审查人员）</b>两条外部角色泳道，
-      并结合建筑/基建行业文档管理的标准实践，为两处流程缺口加了研究支撑的注释。
-      泳道结构与原图保持一致，仅补充内容与视觉呈现做了重新设计。
-      Behördenvertreter 补上了 Personas 原文里明确写着的审批权（此前误画成纯只读）；
-      另外用一组状态标签串起了几个角色分别提到的版本/状态诉求，不再各说各话。
-    </p>
-    <div class="legend">
-      <span class="legend-item"><span class="legend-line"></span>原有流程</span>
-      <span class="legend-item"><span class="legend-line dashed"></span>本次研究新增</span>
-      <span class="legend-item"><span class="legend-swatch"></span>补充注释</span>
-      <span class="legend-item"><span class="legend-swatch status"></span>文档状态标签</span>
-    </div>
-  </header>
-
-  <div class="canvas-break">
-    <div class="canvas">
+function laneContent(markerId: string) {
+  return `
       <svg class="connectors" viewBox="0 0 1780 1220" role="img" aria-label="8 个角色之间的文档流转路径，虚线为本次新增的连接">
         <defs>
-          <marker id="wm-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+          <marker id="${markerId}" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="userSpaceOnUse">
             <polygon points="0,0 8,4 0,8" fill="var(--wm-line-strong)" />
           </marker>
         </defs>
         <g fill="none" stroke="var(--wm-line-strong)" stroke-width="1.6">
-          <path d="M852,257 L852,303" marker-end="url(#wm-arrow)" />
-          <path d="M706,442 L852,442 L852,483" marker-end="url(#wm-arrow)" />
-          <path d="M706,528 L852,528 L852,515" marker-end="url(#wm-arrow)" />
-          <path d="M952,515 L998,515" marker-end="url(#wm-arrow)" />
-          <path d="M1098,547 L1098,663" marker-end="url(#wm-arrow)" />
-          <path d="M706,442 L730,442 L730,925 L752,925" marker-end="url(#wm-arrow)" />
-          <path d="M1344,837 L1344,893" marker-end="url(#wm-arrow)" />
+          <path d="M852,257 L852,303" marker-end="url(#${markerId})" />
+          <path d="M706,442 L852,442 L852,483" marker-end="url(#${markerId})" />
+          <path d="M706,528 L852,528 L852,515" marker-end="url(#${markerId})" />
+          <path d="M952,515 L998,515" marker-end="url(#${markerId})" />
+          <path d="M1098,547 L1098,663" marker-end="url(#${markerId})" />
+          <path d="M706,442 L730,442 L730,925 L752,925" marker-end="url(#${markerId})" />
+          <path d="M1344,837 L1344,893" marker-end="url(#${markerId})" />
         </g>
         <g fill="none" stroke="var(--wm-line-strong)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round">
-          <path d="M852,257 L852,272 L480,272 L480,975 L590,975 L590,993" marker-end="url(#wm-arrow)" />
-          <path d="M1098,727 L1098,745 L960,745 L960,978 L622,978 L622,993" marker-end="url(#wm-arrow)" />
-          <path d="M1098,547 L1098,565 L978,565 L978,1085 L852,1085 L852,1103" marker-end="url(#wm-arrow)" />
-          <path d="M1344,957 L1344,978 L480,978 L480,1085 L606,1085 L606,1103" marker-end="url(#wm-arrow)" />
-          <path d="M1344,257 L1344,280" marker-end="url(#wm-arrow)" />
-          <path d="M1362,370 L1362,390 L975,390 L975,745 L852,745 L852,773" marker-end="url(#wm-arrow)" />
+          <path d="M852,257 L852,272 L480,272 L480,975 L590,975 L590,993" marker-end="url(#${markerId})" />
+          <path d="M1098,727 L1098,745 L960,745 L960,978 L622,978 L622,993" marker-end="url(#${markerId})" />
+          <path d="M1098,547 L1098,565 L978,565 L978,1085 L852,1085 L852,1103" marker-end="url(#${markerId})" />
+          <path d="M1344,957 L1344,978 L480,978 L480,1085 L606,1085 L606,1103" marker-end="url(#${markerId})" />
+          <path d="M1344,257 L1344,280" marker-end="url(#${markerId})" />
+          <path d="M1362,370 L1362,390 L975,390 L975,745 L852,745 L852,773" marker-end="url(#${markerId})" />
         </g>
       </svg>
 
@@ -385,6 +403,71 @@ const DIAGRAM_BODY = `
       <div class="note" style="left:1244px; top:280px;">
         <span class="note-tag">研究补充 · RFI 路由</span>
         现场角色（BL / 工长 / 分包商）发起 → 路由给建筑师 / PL 处理 → <b>结果记录留痕</b>。参考行业 RFI（Request for Information）模式：问题统一路由给对应审核人，全程可追踪、超时自动升级。
+      </div>
+`;
+}
+
+const STAGE_AXIS = `
+    <div class="stage-axis">
+      <div class="stage-pill" style="left:260px;">01 · 创建 / 起草</div>
+      <span class="stage-arrow" style="left:470px;">→</span>
+      <div class="stage-pill" style="left:506px;">02 · 上传 / 内部处理</div>
+      <span class="stage-arrow" style="left:716px;">→</span>
+      <div class="stage-pill" style="left:752px;">03 · 共享 / 协调</div>
+      <span class="stage-arrow" style="left:962px;">→</span>
+      <div class="stage-pill" style="left:998px;">04 · 审核 / 放行</div>
+      <span class="stage-arrow" style="left:1208px;">→</span>
+      <div class="stage-pill" style="left:1244px;">05 · 生效 / 归档 / 现场使用</div>
+    </div>
+`;
+
+const DIAGRAM_BODY = `
+<div class="wm-page">
+  <header class="wm-header">
+    <p class="eyebrow">PR · Document Workflow</p>
+    <h1>角色协作全景图</h1>
+    <p class="lede">
+      在原有的 6 条内部角色泳道基础上，补充了 <b>Bauherr（业主/发包方）</b>与
+      <b>Behördenvertreter / Gutachter（监管方/审查人员）</b>两条外部角色泳道，
+      并结合建筑/基建行业文档管理的标准实践，为两处流程缺口加了研究支撑的注释。
+      泳道结构与原图保持一致，仅补充内容与视觉呈现做了重新设计。
+      Behördenvertreter 补上了 Personas 原文里明确写着的审批权（此前误画成纯只读）；
+      另外用一组状态标签串起了几个角色分别提到的版本/状态诉求，不再各说各话。
+    </p>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-line"></span>原有流程</span>
+      <span class="legend-item"><span class="legend-line dashed"></span>本次研究新增</span>
+      <span class="legend-item"><span class="legend-swatch"></span>补充注释</span>
+      <span class="legend-item"><span class="legend-swatch status"></span>文档状态标签</span>
+    </div>
+  </header>
+
+  <div class="canvas-break">
+    <div class="canvas">
+      ${laneContent("wm-arrow")}
+    </div>
+  </div>
+
+  <div class="variant-header">
+    <p class="eyebrow">方案二 · 探索版</p>
+    <h2>加入阶段参考轴</h2>
+    <p class="lede">
+      上面这张图保持不变。这一版尝试吸收 10.2（Codex）那张图的思路——在顶部加一条阶段参考轴，
+      把 PL"数据碎片化/版本追踪"、Architekt"Versionierung 挑战"、Gutachter"Nachverfolgbarkeit von Änderungen"
+      这几条分散在不同角色 persona 里的诉求串成一条线。这条轴是<b>近似对齐</b>：
+      同一列下面的卡片大致处在同一个阶段，但不是每条泳道的每一步都严格卡在对应列上——
+      比如"搜索文档""打开图纸"这类查找/使用类动作本身就不完全属于"创建→归档"这条流水线，
+      放在最贴近的阶段列，不代表精确对应。标注出这一点，是不想让"轴"看起来比它实际能保证的更精确。
+    </p>
+  </div>
+
+  <div class="canvas-break">
+    <div class="canvas" style="height:1276px;">
+      <div style="position:absolute; top:0; left:0; width:1504px;">
+        ${STAGE_AXIS}
+      </div>
+      <div style="position:absolute; top:56px; left:0; width:1504px; height:1220px;">
+        ${laneContent("wm-arrow2")}
       </div>
     </div>
   </div>
