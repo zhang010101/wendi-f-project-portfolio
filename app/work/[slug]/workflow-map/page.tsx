@@ -32,6 +32,10 @@ const DIAGRAM_STYLES = `
     --wm-tag-new-bg: #2a2419;
     --wm-tag-new-border: #6e6350;
 
+    --wm-status-bg: #16262a;
+    --wm-status-border: #3d6b73;
+    --wm-status-ink: #8fc4cd;
+
     background: var(--wm-bg);
     color: var(--wm-ink);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -89,6 +93,11 @@ const DIAGRAM_STYLES = `
     width: 12px; height: 12px; border-radius: 3px;
     background: var(--wm-tag-new-bg);
     border: 1px dashed var(--wm-tag-new-border);
+  }
+
+  .workflow-map-scope .legend-swatch.status {
+    background: var(--wm-status-bg);
+    border: 1px solid var(--wm-status-border);
   }
 
   .workflow-map-scope .canvas-break {
@@ -156,6 +165,22 @@ const DIAGRAM_STYLES = `
     white-space: nowrap;
   }
 
+  .workflow-map-scope .status-tag {
+    position: absolute;
+    top: -9px;
+    right: -8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: var(--wm-status-bg);
+    border: 1px solid var(--wm-status-border);
+    color: var(--wm-status-ink);
+    white-space: nowrap;
+    box-shadow: var(--wm-shadow);
+  }
+
   .workflow-map-scope .box {
     position: absolute;
     width: 200px;
@@ -217,11 +242,14 @@ const DIAGRAM_BODY = `
       <b>Behördenvertreter / Gutachter（监管方/审查人员）</b>两条外部角色泳道，
       并结合建筑/基建行业文档管理的标准实践，为两处流程缺口加了研究支撑的注释。
       泳道结构与原图保持一致，仅补充内容与视觉呈现做了重新设计。
+      Behördenvertreter 补上了 Personas 原文里明确写着的审批权（此前误画成纯只读）；
+      另外用一组状态标签串起了几个角色分别提到的版本/状态诉求，不再各说各话。
     </p>
     <div class="legend">
       <span class="legend-item"><span class="legend-line"></span>原有流程</span>
       <span class="legend-item"><span class="legend-line dashed"></span>本次研究新增</span>
       <span class="legend-item"><span class="legend-swatch"></span>补充注释</span>
+      <span class="legend-item"><span class="legend-swatch status"></span>文档状态标签</span>
     </div>
   </header>
 
@@ -283,12 +311,12 @@ const DIAGRAM_BODY = `
           <div class="lane-sub">建筑师 / 专业规划师</div>
         </div>
       </div>
-      <div class="box" style="left:260px; top:410px; border-left-color:var(--wm-arch);">创建图纸<br>（在专业应用中）</div>
+      <div class="box" style="left:260px; top:410px; border-left-color:var(--wm-arch);"><span class="status-tag">草稿</span>创建图纸<br>（在专业应用中）</div>
       <div class="box" style="left:506px; top:410px; border-left-color:var(--wm-arch);">上传图纸<br>（在 PR 中）</div>
-      <div class="box" style="left:260px; top:496px; border-left-color:var(--wm-arch);">创建文档<br>（在专业应用中）</div>
+      <div class="box" style="left:260px; top:496px; border-left-color:var(--wm-arch);"><span class="status-tag">草稿</span>创建文档<br>（在专业应用中）</div>
       <div class="box" style="left:506px; top:496px; border-left-color:var(--wm-arch);">上传文档<br>（在 PR 中）</div>
-      <div class="box" style="left:752px; top:483px; border-left-color:var(--wm-arch);">批量处理<br>（ZIP · 自动填写）</div>
-      <div class="box" style="left:998px; top:483px; border-left-color:var(--wm-arch);">审核新文档版本</div>
+      <div class="box" style="left:752px; top:483px; border-left-color:var(--wm-arch);"><span class="status-tag">内部处理中</span>批量处理<br>（ZIP · 自动填写）</div>
+      <div class="box" style="left:998px; top:483px; border-left-color:var(--wm-arch);"><span class="status-tag">待审批</span>审核新文档版本</div>
       <div class="note" style="left:998px; top:561px;">
         <span class="note-tag">研究补充 · 版本控制</span>
         <b>旧版本自动标记为已取代，不删除</b>，保留可追溯——建筑/基建行业文档控制的标准做法，防止现场用错版本导致返工。
@@ -302,7 +330,7 @@ const DIAGRAM_BODY = `
           <div class="lane-sub">秘书处 / 助理（项目管理）</div>
         </div>
       </div>
-      <div class="box" style="left:998px; top:663px; border-left-color:var(--wm-admin);">归档文档</div>
+      <div class="box" style="left:998px; top:663px; border-left-color:var(--wm-admin);"><span class="status-tag">已生效</span>归档文档</div>
       <div class="box" style="left:1244px; top:663px; border-left-color:var(--wm-admin);">维护文件</div>
 
       <div class="lane-divider" style="top:750px;"></div>
@@ -350,6 +378,7 @@ const DIAGRAM_BODY = `
       </div>
       <div class="box" style="left:506px; top:1103px; border-left-color:var(--wm-auditor);">访问相关数据<br>只读 · 按项目过滤</div>
       <div class="box" style="left:752px; top:1103px; border-left-color:var(--wm-auditor);">查看审计记录<br>时间 · 操作人 · 版本历史</div>
+      <div class="box" style="left:998px; top:1103px; border-left-color:var(--wm-auditor);"><span class="status-tag">已批准 / 驳回</span>审核合规性并给出结论<br>批准 · 附条件批准 · 驳回</div>
       <div class="lane-divider" style="top:1190px;"></div>
 
       <div class="box q" style="left:1244px; top:193px;">谁可以创建任务？</div>
