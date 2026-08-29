@@ -269,11 +269,29 @@ const DIAGRAM_STYLES = `
     font-size: 16px;
     color: var(--wm-line-strong);
   }
+
+  /* 探索版（下方带阶段轴的第二张图）专用的更紧凑卡片尺寸和横向布局，只在 .canvas-v2 内生效 */
+  .workflow-map-scope .canvas-v2 { width: 1280px; }
+  .workflow-map-scope .canvas-v2 svg.connectors { width: 1280px; height: 1048px; }
+  .workflow-map-scope .canvas-v2 .lane-divider { width: 1280px; }
+  .workflow-map-scope .canvas-v2 .stage-axis { width: 1280px; }
+  .workflow-map-scope .canvas-v2 .stage-pill { width: 190px; }
+
+  .workflow-map-scope .canvas-v2 .box {
+    width: 190px;
+    height: 52px;
+    padding: 4px 6px;
+    font-size: 12px;
+    line-height: 1.28;
+  }
 `;
 
-function laneContent(markerId: string) {
+// 上面这张图：保持本次改动之前的原始内容/坐标/尺寸不变，
+// 唯一改动是把连接线 <svg> 的 viewBox 宽度从 1780 改成 1504（跟画布实际宽度一致），
+// 修掉此前箭头因 viewBox/画布宽度不匹配而产生的轻微偏移。
+function laneContentOriginal(markerId: string) {
   return `
-      <svg class="connectors" viewBox="0 0 1780 1220" role="img" aria-label="8 个角色之间的文档流转路径，虚线为本次新增的连接">
+      <svg class="connectors" viewBox="0 0 1504 1220" role="img" aria-label="8 个角色之间的文档流转路径，虚线为本次新增的连接">
         <defs>
           <marker id="${markerId}" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="userSpaceOnUse">
             <polygon points="0,0 8,4 0,8" fill="var(--wm-line-strong)" />
@@ -407,17 +425,166 @@ function laneContent(markerId: string) {
 `;
 }
 
+// 下面「方案二 · 探索版」：这次补齐了原始功能图里缺失的内容（PL 审批链、BL 日志质检、
+// Architekt 图纸会审/设计变更通知、Sekretariat 收发文登记、分包商报审竣工、Polier 日志巡检整改），
+// 并把原图独立的「监理工程师」泳道并入 Behördenvertreter 作为补充行，同时把卡片做得更紧凑。
+function laneContentV2(markerId: string) {
+  return `
+      <svg class="connectors" viewBox="0 0 1280 1048" role="img" aria-label="8 个角色之间的文档流转路径，虚线为本次新增的连接">
+        <defs>
+          <marker id="${markerId}" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+            <polygon points="0,0 8,4 0,8" fill="var(--wm-line-strong)" />
+          </marker>
+        </defs>
+        <g fill="none" stroke="var(--wm-line-strong)" stroke-width="1.6">
+          <path d="M741,150 L741,186" marker-end="url(#${markerId})" />
+          <path d="M626,300 L741,300 L741,406" marker-end="url(#${markerId})" />
+          <path d="M626,366 L741,366 L741,450" marker-end="url(#${markerId})" />
+          <path d="M836,432 L856,432" marker-end="url(#${markerId})" />
+          <path d="M951,458 L951,560" marker-end="url(#${markerId})" />
+          <path d="M626,300 L636,300 L636,762 L646,762" marker-end="url(#${markerId})" />
+          <path d="M741,700 L741,720 L1161,720 L1161,736" marker-end="url(#${markerId})" />
+        </g>
+        <g fill="none" stroke="var(--wm-line-strong)" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round">
+          <path d="M741,150 L741,160 L426,160 L426,824 L511,824" marker-end="url(#${markerId})" />
+          <path d="M951,612 L951,622 L846,622 L846,824 L551,824" marker-end="url(#${markerId})" />
+          <path d="M951,432 L951,452 L854,452 L854,970 L741,970 L741,978" marker-end="url(#${markerId})" />
+          <path d="M1161,788 L1161,798 L426,798 L426,970 L531,970 L531,978" marker-end="url(#${markerId})" />
+        </g>
+      </svg>
+
+      <div class="box q" style="left:646px; top:10px;">谁可以创建任务？</div>
+
+      <div class="lane-divider" style="top:80px;"></div>
+      <div class="lane-label" style="top:80px; height:88px;">
+        <div class="lane-chip" style="background:var(--wm-pl);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-pl);">Projektleiter</div>
+          <div class="lane-sub">项目负责人 (PL)</div>
+        </div>
+      </div>
+      <div class="box" style="left:226px; top:98px; border-left-color:var(--wm-pl);">权限、设置</div>
+      <div class="box" style="left:436px; top:98px; border-left-color:var(--wm-pl);">搜索文档</div>
+      <div class="box" style="left:646px; top:98px; border-left-color:var(--wm-pl);">分发文档</div>
+      <div class="box" style="left:856px; top:98px; border-left-color:var(--wm-pl);">审批文档</div>
+      <div class="box" style="left:1066px; top:98px; border-left-color:var(--wm-pl);">发起变更令</div>
+
+      <div class="lane-divider" style="top:168px;"></div>
+      <div class="lane-label" style="top:168px; height:88px;">
+        <div class="lane-chip" style="background:var(--wm-bl);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-bl);">Bauleiter</div>
+          <div class="lane-sub">工地主管 (BL)</div>
+        </div>
+      </div>
+      <div class="box" style="left:436px; top:186px; border-left-color:var(--wm-bl);">录入专业模块数据</div>
+      <div class="box" style="left:646px; top:186px; border-left-color:var(--wm-bl);">审核文档<br>（文档预览）</div>
+      <div class="box" style="left:856px; top:186px; border-left-color:var(--wm-bl);">编写施工日志</div>
+      <div class="box" style="left:1066px; top:186px; border-left-color:var(--wm-bl);">质量检查报告</div>
+
+      <div class="lane-divider" style="top:256px;"></div>
+      <div class="lane-label" style="top:256px; height:286px;">
+        <div class="lane-chip" style="background:var(--wm-arch);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-arch);">Architekt / Planer</div>
+          <div class="lane-sub">建筑师 / 专业规划师</div>
+        </div>
+      </div>
+      <div class="box" style="left:226px; top:274px; border-left-color:var(--wm-arch);"><span class="status-tag">草稿</span>创建图纸<br>（在专业应用中）</div>
+      <div class="box" style="left:436px; top:274px; border-left-color:var(--wm-arch);">上传图纸<br>（在 PR 中）</div>
+      <div class="box" style="left:226px; top:340px; border-left-color:var(--wm-arch);"><span class="status-tag">草稿</span>创建文档<br>（在专业应用中）</div>
+      <div class="box" style="left:436px; top:340px; border-left-color:var(--wm-arch);">上传文档<br>（在 PR 中）</div>
+      <div class="box" style="left:646px; top:406px; border-left-color:var(--wm-arch);"><span class="status-tag">内部处理中</span>批量处理<br>（ZIP · 自动填写）</div>
+      <div class="box" style="left:856px; top:406px; border-left-color:var(--wm-arch);"><span class="status-tag">待审批</span>审核新文档版本</div>
+      <div class="box" style="left:1066px; top:406px; border-left-color:var(--wm-arch);">图纸会审</div>
+      <div class="box" style="left:1066px; top:472px; border-left-color:var(--wm-arch);">设计变更通知</div>
+
+      <div class="lane-divider" style="top:542px;"></div>
+      <div class="lane-label" style="top:542px; height:88px;">
+        <div class="lane-chip" style="background:var(--wm-admin);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-admin);">Sekretariat</div>
+          <div class="lane-sub">秘书处 / 助理（项目管理）</div>
+        </div>
+      </div>
+      <div class="box" style="left:226px; top:560px; border-left-color:var(--wm-admin);">文档编号登记</div>
+      <div class="box" style="left:436px; top:560px; border-left-color:var(--wm-admin);">收发文登记</div>
+      <div class="box" style="left:646px; top:560px; border-left-color:var(--wm-admin);">合规性检查</div>
+      <div class="box" style="left:856px; top:560px; border-left-color:var(--wm-admin);"><span class="status-tag">已生效</span>归档文档</div>
+      <div class="box" style="left:1066px; top:560px; border-left-color:var(--wm-admin);">维护文件</div>
+
+      <div class="lane-divider" style="top:630px;"></div>
+      <div class="lane-label" style="top:630px; height:88px;">
+        <div class="lane-chip" style="background:var(--wm-sub);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-sub);">Subunternehmer</div>
+          <div class="lane-sub">分包商 / 承包商</div>
+        </div>
+      </div>
+      <div class="box" style="left:226px; top:648px; border-left-color:var(--wm-sub);">接收任务</div>
+      <div class="box" style="left:436px; top:648px; border-left-color:var(--wm-sub);">上传文档</div>
+      <div class="box" style="left:646px; top:648px; border-left-color:var(--wm-sub);">分发文档</div>
+      <div class="box" style="left:856px; top:648px; border-left-color:var(--wm-sub);">提交材料报审</div>
+      <div class="box" style="left:1066px; top:648px; border-left-color:var(--wm-sub);">编写竣工资料</div>
+
+      <div class="lane-divider" style="top:718px;"></div>
+      <div class="lane-label" style="top:718px; height:88px;">
+        <div class="lane-chip" style="background:var(--wm-foreman);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-foreman);">Polier</div>
+          <div class="lane-sub">工长</div>
+        </div>
+      </div>
+      <div class="box" style="left:226px; top:736px; border-left-color:var(--wm-foreman);">填写施工日志</div>
+      <div class="box" style="left:436px; top:736px; border-left-color:var(--wm-foreman);">质量巡检记录</div>
+      <div class="box" style="left:646px; top:736px; border-left-color:var(--wm-foreman);">打开图纸</div>
+      <div class="box" style="left:856px; top:736px; border-left-color:var(--wm-foreman);">整改回复</div>
+      <div class="box" style="left:1066px; top:736px; border-left-color:var(--wm-foreman);">记录在专业模块中</div>
+
+      <div class="lane-divider" style="top:806px;"></div>
+      <div class="lane-label" style="top:806px; height:88px;">
+        <div class="lane-chip" style="background:var(--wm-owner);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-owner);">Bauherr <span class="new-tag">补充</span></div>
+          <div class="lane-sub">业主 / 发包方</div>
+        </div>
+      </div>
+      <div class="box" style="left:436px; top:824px; border-left-color:var(--wm-owner);">接收概览通知</div>
+      <div class="box" style="left:646px; top:824px; border-left-color:var(--wm-owner);">查看项目全局概览<br>进度 · 成本 · 风险（只读）</div>
+      <div class="box" style="left:856px; top:824px; border-left-color:var(--wm-owner);">审批文件<br>签署往来审批件</div>
+
+      <div class="lane-divider" style="top:894px;"></div>
+      <div class="lane-label" style="top:894px; height:154px;">
+        <div class="lane-chip" style="background:var(--wm-auditor);"></div>
+        <div>
+          <div class="lane-name" style="color:var(--wm-auditor);">Behördenvertreter <span class="new-tag">补充</span></div>
+          <div class="lane-sub">监管方 / 审查人员</div>
+        </div>
+      </div>
+      <div class="new-tag" style="position:absolute; left:226px; top:896px;">监理工程师职能并入本泳道 ↓</div>
+      <div class="box" style="left:226px; top:912px; border-left-color:var(--wm-auditor);">审核施工方案</div>
+      <div class="box" style="left:436px; top:912px; border-left-color:var(--wm-auditor);">签发监理通知</div>
+      <div class="box" style="left:646px; top:912px; border-left-color:var(--wm-auditor);">质量验收</div>
+      <div class="box" style="left:856px; top:912px; border-left-color:var(--wm-auditor);">旁站记录</div>
+      <div class="box" style="left:1066px; top:912px; border-left-color:var(--wm-auditor);">审核工程量</div>
+      <div class="box" style="left:436px; top:978px; border-left-color:var(--wm-auditor);">访问相关数据<br>只读 · 按项目过滤</div>
+      <div class="box" style="left:646px; top:978px; border-left-color:var(--wm-auditor);">查看审计记录<br>时间 · 操作人 · 版本历史</div>
+      <div class="box" style="left:856px; top:978px; border-left-color:var(--wm-auditor);"><span class="status-tag">已批准 / 驳回</span>审核合规性并给出结论<br>批准 · 附条件批准 · 驳回</div>
+      <div class="lane-divider" style="top:1048px;"></div>
+`;
+}
+
 const STAGE_AXIS = `
     <div class="stage-axis">
-      <div class="stage-pill" style="left:260px;">01 · 创建 / 起草</div>
-      <span class="stage-arrow" style="left:470px;">→</span>
-      <div class="stage-pill" style="left:506px;">02 · 上传 / 内部处理</div>
-      <span class="stage-arrow" style="left:716px;">→</span>
-      <div class="stage-pill" style="left:752px;">03 · 共享 / 协调</div>
-      <span class="stage-arrow" style="left:962px;">→</span>
-      <div class="stage-pill" style="left:998px;">04 · 审核 / 放行</div>
-      <span class="stage-arrow" style="left:1208px;">→</span>
-      <div class="stage-pill" style="left:1244px;">05 · 生效 / 归档 / 现场使用</div>
+      <div class="stage-pill" style="left:226px;">01 · 创建 / 起草</div>
+      <span class="stage-arrow" style="left:426px;">→</span>
+      <div class="stage-pill" style="left:436px;">02 · 上传 / 内部处理</div>
+      <span class="stage-arrow" style="left:636px;">→</span>
+      <div class="stage-pill" style="left:646px;">03 · 共享 / 协调</div>
+      <span class="stage-arrow" style="left:846px;">→</span>
+      <div class="stage-pill" style="left:856px;">04 · 审核 / 放行</div>
+      <span class="stage-arrow" style="left:1056px;">→</span>
+      <div class="stage-pill" style="left:1066px;">05 · 生效 / 归档 / 现场使用</div>
     </div>
 `;
 
@@ -444,7 +611,7 @@ const DIAGRAM_BODY = `
 
   <div class="canvas-break">
     <div class="canvas">
-      ${laneContent("wm-arrow")}
+      ${laneContentOriginal("wm-arrow")}
     </div>
   </div>
 
@@ -458,16 +625,21 @@ const DIAGRAM_BODY = `
       同一列下面的卡片大致处在同一个阶段，但不是每条泳道的每一步都严格卡在对应列上——
       比如"搜索文档""打开图纸"这类查找/使用类动作本身就不完全属于"创建→归档"这条流水线，
       放在最贴近的阶段列，不代表精确对应。标注出这一点，是不想让"轴"看起来比它实际能保证的更精确。
+      这一版还额外做了两件事：对照原始功能图补齐了此前遗漏的内容——PL 的审批链（审批文档/发起变更令）、
+      BL 的日志与质检、Architekt 的图纸会审/设计变更通知、Sekretariat 的收发文登记、
+      分包商的报审竣工与工长的日志巡检整改；原图独立的「监理工程师」泳道，因其职能与
+      Behördenvertreter 的现场质检/放行高度重叠，合并作为该泳道的补充行，而非另开一条泳道。
+      同时把卡片和间距做得更紧凑，容纳这些新增内容的同时不让图变得更臃肿。
     </p>
   </div>
 
   <div class="canvas-break">
-    <div class="canvas" style="height:1276px;">
-      <div style="position:absolute; top:0; left:0; width:1504px;">
+    <div class="canvas canvas-v2" style="height:1104px;">
+      <div style="position:absolute; top:0; left:0; width:1280px;">
         ${STAGE_AXIS}
       </div>
-      <div style="position:absolute; top:56px; left:0; width:1504px; height:1220px;">
-        ${laneContent("wm-arrow2")}
+      <div style="position:absolute; top:56px; left:0; width:1280px; height:1048px;">
+        ${laneContentV2("wm-arrow2")}
       </div>
     </div>
   </div>
