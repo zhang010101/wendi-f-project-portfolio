@@ -215,7 +215,7 @@ export const projects: Project[] = [
         ],
         storyMapIntro:
           "理清协作流程之后，我们把整个模块要做的事情用 User Story Map 拆解成 Activities → Steps → Details 三层，再按 P0/P1/P2 分成三个 Release 逐步交付——这也是下面“分阶段交付”这个判断背后具体的规划方式。",
-        storyMapImage: "/images/pr-user-story-map.png",
+        storyMapImage: "/images/pr-user-story-map.jpg",
         decisionsIntro: "围绕这个协作模型，PR 的系统设计还有两个值得一提的判断：",
         decisions: [
           {
