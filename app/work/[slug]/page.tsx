@@ -59,7 +59,7 @@ export default async function CaseDetailPage({
 
             <DrawingFrame
               figure={fig(0)}
-              caption="Document grid —— 三栏经典布局：Structure 树 / 文档表格 / Detail 预览"
+              caption={project.caseStudy.hero.imageCaption}
               className="mt-12"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -84,36 +84,39 @@ export default async function CaseDetailPage({
                   ))}
                 </div>
 
-                <div className="mt-10 grid gap-4 sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-6">
-                  <div className="space-y-3">
-                    {project.caseStudy.background.systems.map((s) => (
-                      <div
-                        key={s.tool}
-                        className="flex items-center justify-between border border-[var(--pr-line)] bg-[var(--pr-panel)] px-4 py-3 text-sm"
-                      >
-                        <span className="font-mono text-[var(--pr-ink)]">
-                          {s.tool}
-                        </span>
-                        <span className="text-muted">{s.use}</span>
+                {project.caseStudy.background.systems &&
+                  project.caseStudy.background.systems.length > 0 && (
+                    <div className="mt-10 grid gap-4 sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-6">
+                      <div className="space-y-3">
+                        {project.caseStudy.background.systems.map((s) => (
+                          <div
+                            key={s.tool}
+                            className="flex items-center justify-between border border-[var(--pr-line)] bg-[var(--pr-panel)] px-4 py-3 text-sm"
+                          >
+                            <span className="font-mono text-[var(--pr-ink)]">
+                              {s.tool}
+                            </span>
+                            <span className="text-muted">{s.use}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                  <div
-                    className="hidden flex-col items-center gap-1 sm:flex"
-                    aria-hidden="true"
-                  >
-                    <span className="h-px w-10 bg-[var(--pr-line)]" />
-                    <span className="font-mono text-lg text-[var(--pr-cyan)]">
-                      →
-                    </span>
-                    <span className="h-px w-10 bg-[var(--pr-line)]" />
-                  </div>
-                  <div className="flex items-center justify-center border border-[var(--pr-cyan)]/50 bg-[var(--pr-panel)] px-10 py-8 text-center">
-                    <span className="font-mono text-lg font-semibold text-[var(--pr-cyan)]">
-                      PR
-                    </span>
-                  </div>
-                </div>
+                      <div
+                        className="hidden flex-col items-center gap-1 sm:flex"
+                        aria-hidden="true"
+                      >
+                        <span className="h-px w-10 bg-[var(--pr-line)]" />
+                        <span className="font-mono text-lg text-[var(--pr-cyan)]">
+                          →
+                        </span>
+                        <span className="h-px w-10 bg-[var(--pr-line)]" />
+                      </div>
+                      <div className="flex items-center justify-center border border-[var(--pr-cyan)]/50 bg-[var(--pr-panel)] px-10 py-8 text-center">
+                        <span className="font-mono text-lg font-semibold text-[var(--pr-cyan)]">
+                          {project.caseStudy.background.targetLabel}
+                        </span>
+                      </div>
+                    </div>
+                  )}
               </section>
             )}
 

@@ -10,11 +10,13 @@ export type Project = {
       tagline: string;
       subtitle: string;
       keyInfo: string[];
+      imageCaption: string;
     };
     background?: {
       heading: string;
       paragraphs: string[];
-      systems: { tool: string; use: string }[];
+      systems?: { tool: string; use: string }[];
+      targetLabel?: string;
     };
     personas?: {
       heading: string;
@@ -109,6 +111,8 @@ export const projects: Project[] = [
           "交付节奏：分阶段迭代（User Story Map Volumen 1/2/3）",
           "平台：Desktop + Tablet（办公室与工地两种使用场景）",
         ],
+        imageCaption:
+          "Document grid —— 三栏经典布局：Structure 树 / 文档表格 / Detail 预览",
       },
       background: {
         heading: "背景与挑战",
@@ -126,6 +130,7 @@ export const projects: Project[] = [
           { tool: "JF", use: "会议纪要" },
           { tool: "PX", use: "图纸" },
         ],
+        targetLabel: "PR",
       },
       personas: {
         heading: "先搞清楚 8 个人分别要什么",
@@ -378,6 +383,37 @@ export const projects: Project[] = [
           },
         ],
         note: "后续可补充的量化数据（暂不在本轮案例里，留作以后有产品埋点数据后再加）：文档处理/查找时间缩短了多少、上线后的采用率。",
+      },
+    },
+  },
+  {
+    slug: "jf",
+    title: "JF —— 会议纪要",
+    category: "产品界面",
+    year: "2025-今",
+    cover: "/images/jf-hero.png",
+    summary:
+      "施工/工程监理场景里的用户早就习惯了用 Excel 记会议纪要。JF 不是又一个数字化的 Excel，而是重新设计了一套结构化的记录方式。",
+    caseStudy: {
+      hero: {
+        tagline:
+          "JF —— mydocma 生态里为施工/工程监理项目打造的会议纪要（Protokoll）模块。",
+        subtitle:
+          "这个场景里的人早就习惯了用 Excel 记会议纪要。JF 不是又一个“数字化的 Excel”，而是重新设计了一套结构化的记录方式——这个案例讲的大部分是“为什么这么设计”，而不是“整合了哪些系统”。",
+        keyInfo: [
+          "团队：产品经理 + 设计师（我）+ 开发，三人小队",
+          "平台：Desktop 优先，Tablet/Mobile 陆续跟进",
+          "交付：分阶段上线，History 等模块是 v1 之后才追加的",
+        ],
+        imageCaption:
+          "Blockstruktur 插入菜单 —— 层级编号（Erdgeschoss → Ist-Zustand → 纪要点）+ Überschrift / Protokollpunkt / Absatz / Bilder 四种块类型",
+      },
+      background: {
+        heading: "背景与挑战",
+        paragraphs: [
+          "施工/工程监理项目里，会议纪要是责任和证据的载体：谁提出了什么、谁认领了任务、出问题时能不能查到当时的决定。但记录方式长期以来就是一件事——打开 Excel，按行按列手动记。这不是因为没有更好的工具，而是 Excel 已经变成了这些用户的肌肉记忆。",
+          "JF 面对的不是数据迁移问题，是习惯/学习曲线问题——挑战是让用惯 Excel 的人愿意并且能快速上手 JF。设计的着力点不是“怎么把旧数据搬进来”，而是“怎么让新工具的心智模型贴近他们已经熟悉的那一套”。",
+        ],
       },
     },
   },
