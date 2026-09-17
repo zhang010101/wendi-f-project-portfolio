@@ -46,7 +46,7 @@ export default async function CaseDetailPage({
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
               {project.category} · {project.year}
             </p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-[1.15] tracking-tight md:text-6xl">
+            <h1 className="mt-3 max-w-3xl text-2xl font-semibold leading-[1.25] tracking-tight md:text-4xl">
               {project.caseStudy.hero.tagline}
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted">
