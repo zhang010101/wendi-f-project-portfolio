@@ -136,6 +136,38 @@ export default async function CaseDetailPage({
                   )}
                 </div>
 
+                {project.caseStudy.decisionOverview.legacyExample && (
+                  <>
+                    <p className="mt-10 max-w-2xl text-muted">
+                      {project.caseStudy.decisionOverview.legacyExample.intro}
+                    </p>
+                    <div className="mt-4 grid gap-6 sm:grid-cols-2">
+                      {project.caseStudy.decisionOverview.legacyExample.images.map(
+                        (img, i) => (
+                          <DrawingFrame
+                            key={img.src}
+                            figure={fig(1 + i)}
+                            caption={img.caption}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={img.src}
+                              alt={img.caption}
+                              className="w-full object-cover"
+                            />
+                          </DrawingFrame>
+                        )
+                      )}
+                    </div>
+                    <p className="mt-6 max-w-2xl text-muted">
+                      {renderWithEmphasis(
+                        project.caseStudy.decisionOverview.legacyExample
+                          .connection
+                      )}
+                    </p>
+                  </>
+                )}
+
                 <p className="mt-10 max-w-2xl text-muted">
                   {project.caseStudy.decisionOverview.tracksIntro}
                 </p>
@@ -161,7 +193,7 @@ export default async function CaseDetailPage({
                 </div>
 
                 <DrawingFrame
-                  figure={fig(1)}
+                  figure={fig(3)}
                   caption={project.caseStudy.decisionOverview.imageCaption}
                   className="mt-10"
                 >

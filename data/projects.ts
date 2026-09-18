@@ -21,6 +21,11 @@ export type Project = {
     decisionOverview?: {
       heading: string;
       paragraphs: string[];
+      legacyExample?: {
+        intro: string;
+        images: { src: string; caption: string }[];
+        connection: string;
+      };
       tracksIntro: string;
       tracks: { title: string; description: string }[];
       image: string;
@@ -429,6 +434,24 @@ export const projects: Project[] = [
           "Excel 心智模型本质上是“表格 + 手动编号”：一行一条纪要点，编号、格式都自己排。照搬成通用文档编辑器（像 Notion 那样自由排版）反而会更乱——没有了 Excel“填进格子就有结构”的安全感。",
           "JF 的核心设计赌注：不做通用编辑器，而是把 Excel 用户依赖的“格子感”翻译成一套**受约束的层级块结构**——标题、纪要点、段落、图片各自能挂在什么下面、不能做什么，规则写死在编辑器里。",
         ],
+        legacyExample: {
+          intro:
+            "这是客户此前手动维护多年的真实会议纪要范例——左边是图例与议程规则，右边是实际填写的内容。",
+          images: [
+            {
+              src: "/images/jf-legacy-legend.jpg",
+              caption:
+                "图例与议程规则——手动维护的层级编号约定（如 1.8.2：章节 / 协议序号 / 子条目序号），以及 I.F.A.（Information / Festlegung / Aufgabe）分类",
+            },
+            {
+              src: "/images/jf-legacy-example.jpg",
+              caption:
+                "实际填写内容——编号（如 12.56.1）与议程结构一一对应，同一条目按日期滚动追加备注",
+            },
+          ],
+          connection:
+            "这套编号规则和 I.F.A. 分类，客户已经手动维护了很多年——JF 没有发明新概念，而是把它们变成编辑器里的强制规则：层级编号交给 Blockstruktur 自动生成，I.F.A. 变成录入纪要点时的必选类型。",
+        },
         tracksIntro: "这个赌注怎么落地，分两条子线往下讲：",
         tracks: [
           {
