@@ -120,6 +120,61 @@ export default async function CaseDetailPage({
               </section>
             )}
 
+            {project.caseStudy.decisionOverview && (
+              <section>
+                <DimensionRule />
+                <SheetHeading
+                  sheet="02"
+                  label="Decisions"
+                  heading={project.caseStudy.decisionOverview.heading}
+                />
+                <div className="mt-6 max-w-2xl space-y-4 text-muted">
+                  {project.caseStudy.decisionOverview.paragraphs.map(
+                    (p, i) => (
+                      <p key={i}>{renderWithEmphasis(p)}</p>
+                    )
+                  )}
+                </div>
+
+                <p className="mt-10 max-w-2xl text-muted">
+                  {project.caseStudy.decisionOverview.tracksIntro}
+                </p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {project.caseStudy.decisionOverview.tracks.map(
+                    (track, i) => (
+                      <div
+                        key={track.title}
+                        className="border border-[var(--pr-line)] bg-[var(--pr-panel)] p-5"
+                      >
+                        <p className="font-mono text-xs text-[var(--pr-cyan)]">
+                          {String(i + 1).padStart(2, "0")}
+                        </p>
+                        <p className="mt-1 font-semibold text-primary">
+                          {track.title}
+                        </p>
+                        <p className="mt-2 text-sm text-muted">
+                          {track.description}
+                        </p>
+                      </div>
+                    )
+                  )}
+                </div>
+
+                <DrawingFrame
+                  figure={fig(1)}
+                  caption={project.caseStudy.decisionOverview.imageCaption}
+                  className="mt-10"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.caseStudy.decisionOverview.image}
+                    alt={project.caseStudy.decisionOverview.imageCaption}
+                    className="w-full object-cover"
+                  />
+                </DrawingFrame>
+              </section>
+            )}
+
             {project.caseStudy.personas && (
               <section>
                 <DimensionRule />

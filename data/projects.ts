@@ -18,6 +18,14 @@ export type Project = {
       systems?: { tool: string; use: string }[];
       targetLabel?: string;
     };
+    decisionOverview?: {
+      heading: string;
+      paragraphs: string[];
+      tracksIntro: string;
+      tracks: { title: string; description: string }[];
+      image: string;
+      imageCaption: string;
+    };
     personas?: {
       heading: string;
       intro: string;
@@ -414,6 +422,29 @@ export const projects: Project[] = [
           "施工/工程监理项目里，会议纪要是责任和证据的载体：谁提出了什么、谁认领了任务、出问题时能不能查到当时的决定。但记录方式长期以来就是一件事——打开 Excel，按行按列手动记。这不是因为没有更好的工具，而是 Excel 已经变成了这些用户的肌肉记忆。",
           "JF 面对的不是数据迁移问题，是习惯/学习曲线问题——挑战是让用惯 Excel 的人愿意并且能快速上手 JF。设计的着力点不是“怎么把旧数据搬进来”，而是“怎么让新工具的心智模型贴近他们已经熟悉的那一套”。",
         ],
+      },
+      decisionOverview: {
+        heading: "设计决策总览——从习惯到结构",
+        paragraphs: [
+          "Excel 心智模型本质上是“表格 + 手动编号”：一行一条纪要点，编号、格式都自己排。照搬成通用文档编辑器（像 Notion 那样自由排版）反而会更乱——没有了 Excel“填进格子就有结构”的安全感。",
+          "JF 的核心设计赌注：不做通用编辑器，而是把 Excel 用户依赖的“格子感”翻译成一套**受约束的层级块结构**——标题、纪要点、段落、图片各自能挂在什么下面、不能做什么，规则写死在编辑器里。",
+        ],
+        tracksIntro: "这个赌注怎么落地，分两条子线往下讲：",
+        tracks: [
+          {
+            title: "Editor / Blockstruktur 结构化编辑器",
+            description:
+              "层级块结构本身怎么设计、为什么是这几种块类型和这套嵌套规则。",
+          },
+          {
+            title: "History / 历史记录",
+            description:
+              "把内容锁进结构化规则之后，随之而来的新问题是“谁改了什么、能不能追溯或恢复”，这条线讲的是怎么解决这个衍生的信任问题。",
+          },
+        ],
+        image: "/images/jf-blockstruktur-hierarchy.png",
+        imageCaption:
+          "Blockstruktur 层级结构示意图 —— Überschrift 1/2、Protokollpunkt 各自的嵌套规则，以及 Absatz / Horizontale Linie / Bilder 的插入位置",
       },
     },
   },
