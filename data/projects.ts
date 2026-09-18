@@ -64,18 +64,20 @@ export type Project = {
     deepDive?: {
       heading: string;
       intro: string;
+      sheet: string;
+      label: string;
       problem: { heading: string; paragraphs: string[] };
-      process: {
+      process?: {
         heading: string;
         paragraphs: string[];
-        images: { src: string; caption: string }[];
+        images: { src?: string; caption: string }[];
       };
       decision: {
         heading: string;
         paragraphs: string[];
-        images: { src: string; caption: string }[];
+        images: { src?: string; caption: string }[];
       };
-      result: {
+      result?: {
         heading: string;
         paragraphs: string[];
         image: string;
@@ -298,6 +300,8 @@ export const projects: Project[] = [
       },
       deepDive: {
         heading: "深度案例主线 —— Upload 可用性测试迭代",
+        sheet: "05",
+        label: "Case Study",
         intro:
           "PR 上线后，我们没有假设“新建/上传文档”这条最高频的操作就一定好用——而是做了两轮可用性测试，每轮找 4 位参与者，先测线上版本，再测重新设计的原型。",
         problem: {
@@ -468,6 +472,30 @@ export const projects: Project[] = [
         image: "/images/jf-blockstruktur-hierarchy.png",
         imageCaption:
           "Blockstruktur 层级结构示意图 —— Überschrift 1/2、Protokollpunkt 各自的嵌套规则，以及 Absatz / Horizontale Linie / Bilder 的插入位置",
+      },
+      deepDive: {
+        heading: "深潜一 —— Editor / Blockstruktur 结构化编辑器",
+        sheet: "03",
+        label: "Editor",
+        intro:
+          "板块3提到的两条子线，这里先看第一条——层级块结构本身已经解决了“怎么记录”的问题，但不代表每个能力都会被自然发现。下面这个真实反馈，正好出在这条缝隙里。",
+        problem: {
+          heading: "问题",
+          paragraphs: [
+            "JF beta 上线后，客服收集的一手反馈里提到：不少用户并不知道可以通过“段落（Absatz）”把一个纪要点下的任务分给多个负责人——这个能力当时已经在编辑器里，只是没有被发现。",
+          ],
+        },
+        decision: {
+          heading: "优化前 → 优化后",
+          paragraphs: [
+            "问题不是要不要支持多责任人分配——Absatz 本来就是为这件事设计的——而是这个用法藏得太深，正常操作路径里根本看不到它的存在。",
+            "这部分的界面优化目前还在设计中，这里先留出前后对比的位置，方案确定后再补上实际截图。",
+          ],
+          images: [
+            { caption: "优化前 —— 待补充" },
+            { caption: "优化后 —— 待补充" },
+          ],
+        },
       },
     },
   },

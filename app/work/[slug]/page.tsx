@@ -340,8 +340,8 @@ export default async function CaseDetailPage({
               <section>
                 <DimensionRule />
                 <SheetHeading
-                  sheet="05"
-                  label="Case Study"
+                  sheet={project.caseStudy.deepDive.sheet}
+                  label={project.caseStudy.deepDive.label}
                   heading={project.caseStudy.deepDive.heading}
                 />
                 <p className="mt-6 max-w-2xl text-muted">
@@ -359,32 +359,46 @@ export default async function CaseDetailPage({
                   )}
                 </div>
 
-                <h3 className="mt-14 text-lg font-semibold">
-                  {project.caseStudy.deepDive.process.heading}
-                </h3>
-                <div className="mt-4 max-w-2xl space-y-4 text-muted">
-                  {project.caseStudy.deepDive.process.paragraphs.map(
-                    (p, i) => (
-                      <p key={i}>{renderWithEmphasis(p)}</p>
-                    )
-                  )}
-                </div>
-                <div className="mt-2 grid gap-6 sm:grid-cols-2">
-                  {project.caseStudy.deepDive.process.images.map((img, i) => (
-                    <DrawingFrame
-                      key={img.src}
-                      figure={fig(2 + i)}
-                      caption={img.caption}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={img.src}
-                        alt={img.caption}
-                        className="w-full object-cover"
-                      />
-                    </DrawingFrame>
-                  ))}
-                </div>
+                {project.caseStudy.deepDive.process && (
+                  <>
+                    <h3 className="mt-14 text-lg font-semibold">
+                      {project.caseStudy.deepDive.process.heading}
+                    </h3>
+                    <div className="mt-4 max-w-2xl space-y-4 text-muted">
+                      {project.caseStudy.deepDive.process.paragraphs.map(
+                        (p, i) => (
+                          <p key={i}>{renderWithEmphasis(p)}</p>
+                        )
+                      )}
+                    </div>
+                    <div className="mt-2 grid gap-6 sm:grid-cols-2">
+                      {project.caseStudy.deepDive.process.images.map(
+                        (img, i) => (
+                          <DrawingFrame
+                            key={img.caption}
+                            figure={fig(2 + i)}
+                            caption={img.caption}
+                          >
+                            {img.src ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={img.src}
+                                alt={img.caption}
+                                className="w-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-56 items-center justify-center border border-dashed border-[var(--pr-line)]">
+                                <span className="font-mono text-xs uppercase tracking-wide text-muted">
+                                  占位 · 设计中
+                                </span>
+                              </div>
+                            )}
+                          </DrawingFrame>
+                        )
+                      )}
+                    </div>
+                  </>
+                )}
 
                 <h3 className="mt-14 text-lg font-semibold">
                   {project.caseStudy.deepDive.decision.heading}
@@ -400,67 +414,79 @@ export default async function CaseDetailPage({
                   {project.caseStudy.deepDive.decision.images.map(
                     (img, i) => (
                       <DrawingFrame
-                        key={img.src}
+                        key={img.caption}
                         figure={fig(5 + i)}
                         caption={img.caption}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={img.src}
-                          alt={img.caption}
-                          className="w-full object-cover"
-                        />
+                        {img.src ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={img.src}
+                            alt={img.caption}
+                            className="w-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-56 items-center justify-center border border-dashed border-[var(--pr-line)]">
+                            <span className="font-mono text-xs uppercase tracking-wide text-muted">
+                              占位 · 设计中
+                            </span>
+                          </div>
+                        )}
                       </DrawingFrame>
                     )
                   )}
                 </div>
 
-                <h3 className="mt-14 text-lg font-semibold">
-                  {project.caseStudy.deepDive.result.heading}
-                </h3>
-                <div className="mt-4 max-w-2xl space-y-4">
-                  {project.caseStudy.deepDive.result.paragraphs.map(
-                    (p, i) =>
-                      i === 1 ? (
-                        <p
-                          key={i}
-                          className="flex gap-3 border-l-2 border-accent py-0.5 pl-4 text-muted"
-                        >
-                          <span
-                            className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
-                            aria-hidden="true"
-                          />
-                          <span>{renderWithEmphasis(p)}</span>
-                        </p>
-                      ) : (
-                        <p key={i} className="text-muted">
-                          {renderWithEmphasis(p)}
-                        </p>
-                      )
-                  )}
-                </div>
-                <DrawingFrame
-                  figure={fig(7)}
-                  caption="新建文档流程完成后的文档网格视图"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.caseStudy.deepDive.result.image}
-                    alt="新建文档流程完成后的文档网格视图"
-                    className="w-full object-cover"
-                  />
-                </DrawingFrame>
-                <DrawingFrame
-                  figure={fig(8)}
-                  caption="操作录屏 —— 新建/上传文档完整流程，73 秒"
-                >
-                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                  <video
-                    src={project.caseStudy.deepDive.result.video}
-                    controls
-                    className="w-full"
-                  />
-                </DrawingFrame>
+                {project.caseStudy.deepDive.result && (
+                  <>
+                    <h3 className="mt-14 text-lg font-semibold">
+                      {project.caseStudy.deepDive.result.heading}
+                    </h3>
+                    <div className="mt-4 max-w-2xl space-y-4">
+                      {project.caseStudy.deepDive.result.paragraphs.map(
+                        (p, i) =>
+                          i === 1 ? (
+                            <p
+                              key={i}
+                              className="flex gap-3 border-l-2 border-accent py-0.5 pl-4 text-muted"
+                            >
+                              <span
+                                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                                aria-hidden="true"
+                              />
+                              <span>{renderWithEmphasis(p)}</span>
+                            </p>
+                          ) : (
+                            <p key={i} className="text-muted">
+                              {renderWithEmphasis(p)}
+                            </p>
+                          )
+                      )}
+                    </div>
+                    <DrawingFrame
+                      figure={fig(7)}
+                      caption="新建文档流程完成后的文档网格视图"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={project.caseStudy.deepDive.result.image}
+                        alt="新建文档流程完成后的文档网格视图"
+                        className="w-full object-cover"
+                      />
+                    </DrawingFrame>
+                    <DrawingFrame
+                      figure={fig(8)}
+                      caption="操作录屏 —— 新建/上传文档完整流程，73 秒"
+                    >
+                      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                      <video
+                        src={project.caseStudy.deepDive.result.video}
+                        controls
+                        className="w-full"
+                      />
+                    </DrawingFrame>
+                  </>
+                )}
               </section>
             )}
 
