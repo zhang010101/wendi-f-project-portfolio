@@ -336,6 +336,104 @@ export default async function CaseDetailPage({
               </section>
             )}
 
+            {project.caseStudy.meetingRelation && (
+              <section>
+                <DimensionRule />
+                <SheetHeading
+                  sheet={project.caseStudy.meetingRelation.sheet}
+                  label={project.caseStudy.meetingRelation.label}
+                  heading={project.caseStudy.meetingRelation.heading}
+                />
+                <p className="mt-6 max-w-2xl text-muted">
+                  {project.caseStudy.meetingRelation.intro}
+                </p>
+
+                <h3 className="mt-14 text-lg font-semibold">
+                  {project.caseStudy.meetingRelation.startPage.heading}
+                </h3>
+                <p className="mt-4 max-w-2xl text-muted">
+                  {project.caseStudy.meetingRelation.startPage.intro}
+                </p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {project.caseStudy.meetingRelation.startPage.highlights.map(
+                    (h, i) => (
+                      <div
+                        key={h.title}
+                        className="border border-[var(--pr-line)] bg-[var(--pr-panel)] p-5"
+                      >
+                        <p className="font-mono text-xs text-[var(--pr-cyan)]">
+                          {String(i + 1).padStart(2, "0")}
+                        </p>
+                        <p className="mt-1 font-semibold text-primary">
+                          {h.title}
+                        </p>
+                        <p className="mt-2 text-sm text-muted">
+                          {h.description}
+                        </p>
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="mt-2 grid gap-6 sm:grid-cols-2">
+                  {project.caseStudy.meetingRelation.startPage.images.map(
+                    (img, i) => (
+                      <DrawingFrame
+                        key={img.src}
+                        figure={fig(4 + i)}
+                        caption={img.caption}
+                        className={i === 0 ? "sm:col-span-2" : undefined}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={img.src}
+                          alt={img.caption}
+                          className="w-full object-cover"
+                        />
+                      </DrawingFrame>
+                    )
+                  )}
+                </div>
+                <p className="mt-6 max-w-2xl text-muted">
+                  {project.caseStudy.meetingRelation.startPage.closing}
+                </p>
+
+                <h3 className="mt-14 text-lg font-semibold">
+                  {project.caseStudy.meetingRelation.relationHeading}
+                </h3>
+                <p className="mt-4 max-w-2xl text-muted">
+                  {project.caseStudy.meetingRelation.scenario}
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {project.caseStudy.meetingRelation.modes.map((mode) => (
+                    <div
+                      key={mode.title}
+                      className="border border-[var(--pr-line)] bg-[var(--pr-panel)] p-5"
+                    >
+                      <p className="font-mono text-xs text-[var(--pr-cyan)]">
+                        {mode.label}
+                      </p>
+                      <p className="mt-1 font-semibold text-primary">
+                        {mode.title}
+                      </p>
+                      <p className="mt-2 text-sm text-muted">
+                        {mode.description}
+                      </p>
+                      <p className="mt-3 border-t border-[var(--pr-line)] pt-3 text-sm text-muted">
+                        {mode.fit}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <h3 className="mt-14 text-lg font-semibold">
+                  {project.caseStudy.meetingRelation.switching.heading}
+                </h3>
+                <p className="mt-4 max-w-2xl text-muted">
+                  {project.caseStudy.meetingRelation.switching.paragraph}
+                </p>
+              </section>
+            )}
+
             {project.caseStudy.deepDive && (
               <section>
                 <DimensionRule />
@@ -415,7 +513,7 @@ export default async function CaseDetailPage({
                     (img, i) => (
                       <DrawingFrame
                         key={img.caption}
-                        figure={fig(5 + i)}
+                        figure={fig((project.caseStudy?.deepDive?.decisionFigStart ?? 5) + i)}
                         caption={img.caption}
                       >
                         {img.src ? (

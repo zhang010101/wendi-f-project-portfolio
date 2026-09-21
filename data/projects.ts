@@ -66,6 +66,7 @@ export type Project = {
       intro: string;
       sheet: string;
       label: string;
+      decisionFigStart?: number;
       problem: { heading: string; paragraphs: string[] };
       process?: {
         heading: string;
@@ -83,6 +84,23 @@ export type Project = {
         image: string;
         video: string;
       };
+    };
+    meetingRelation?: {
+      heading: string;
+      sheet: string;
+      label: string;
+      intro: string;
+      startPage: {
+        heading: string;
+        intro: string;
+        highlights: { title: string; description: string }[];
+        images: { src: string; caption: string }[];
+        closing: string;
+      };
+      relationHeading: string;
+      scenario: string;
+      modes: { label: string; title: string; description: string; fit: string }[];
+      switching: { heading: string; paragraph: string };
     };
     systemsThinking?: {
       heading: string;
@@ -456,8 +474,13 @@ export const projects: Project[] = [
           connection:
             "这套编号规则，客户在 Excel 时代已经手动维护了很多年。JF 没有重新发明一套东西，而是把层级编号交给系统自动生成——插入、删除或调整顺序时不用再手动重新编号，省掉这块最容易出错的手工活。",
         },
-        tracksIntro: "这个赌注怎么落地，分两条子线往下讲：",
+        tracksIntro: "这个赌注怎么落地，分三条子线往下讲：",
         tracks: [
+          {
+            title: "会议与纪要 / 起始页面",
+            description:
+              "所有会议的入口，也是打开 Editor 的地方。起始页面怎么设计，以及一个会议下的多份纪要之间是什么关系：接着上一份继续写，还是重新开一份。",
+          },
           {
             title: "Editor / Blockstruktur 结构化编辑器",
             description:
@@ -473,12 +496,89 @@ export const projects: Project[] = [
         imageCaption:
           "Blockstruktur 层级结构示意图 —— Überschrift 1/2、Protokollpunkt 各自的嵌套规则，以及 Absatz / Horizontale Linie / Bilder 的插入位置",
       },
+      meetingRelation: {
+        heading: "会议与纪要 —— 从起始页面说起",
+        sheet: "03",
+        label: "Besprechung",
+        intro:
+          "会议（Besprechung）是 JF 的起点：先有会议，再在会议下建纪要，点开纪要才进入 Editor。会议和纪要是一对多的关系，起始页面要做的，是会议和纪要越积越多时仍然能一眼找到、随手切换。",
+        startPage: {
+          heading: "起始页面",
+          intro: "几个值得一提的设计点：",
+          highlights: [
+            {
+              title: "列表 + 详情，不跳页",
+              description:
+                "左边是会议卡片，选中一张，右边直接展开这个会议的详情和全部纪要（Details / Teilnehmer / Protokolle / Optionen），查看、新建纪要都在同一屏完成。",
+            },
+            {
+              title: "卡片随宽度自适应",
+              description:
+                "会议卡片的列数随可用宽度从 3 列 → 2 列 → 1 列，右侧详情内容在宽面板里居中，不会被拉得松散。",
+            },
+            {
+              title: "纪要进度一眼可见",
+              description:
+                "每份纪要都是 PDF 缩略图 + 状态标签 + 参会人 / 决定事项 / 任务三个计数。纪要只有草稿和完成两种状态：草稿用彩色，已完成的灰掉，注意力自然落在还没完成的纪要上。",
+            },
+            {
+              title: "会议卡片可以自己“上色”",
+              description:
+                "每个会议可选颜色和图标，卡片上直接列出开会周期、首份和最近一份纪要的日期、最近的纪要编号，右上角的小角标显示这个会议下有几份纪要。",
+            },
+          ],
+          images: [
+            {
+              src: "/images/jf-start-layout-1.jpg",
+              caption: "起始页面 —— 左侧会议卡片（3 列），右侧选中会议的纪要列表",
+            },
+            {
+              src: "/images/jf-start-layout-2.jpg",
+              caption: "可用宽度变窄 —— 卡片变为 2 列",
+            },
+            {
+              src: "/images/jf-start-layout-3.jpg",
+              caption: "继续变窄 —— 卡片变为 1 列，右侧内容居中",
+            },
+            {
+              src: "/images/jf-start-icon-picker.jpg",
+              caption: "为会议卡片选择颜色（Farbe）和图标（Symbol）",
+            },
+          ],
+          closing: "点开任意一份纪要，就进入下一节的 Editor。",
+        },
+        relationHeading: "会议与纪要的关系 —— 接着写，还是重新写",
+        scenario:
+          "新建纪要时，它和上一份是什么关系？以一个周会为例：第一周的纪要是纪要 1，第二周的是纪要 2。纪要 2 有两种写法，对应用户在意的两件不同的事。",
+        modes: [
+          {
+            label: "做法一",
+            title: "接着纪要 1 继续写",
+            description:
+              "不再区分哪次会议写了什么，所有纪要项列在一起，只区分状态：已完成的项变浅并用绿色标记，未完成或处于其他状态的项都照常列出，一视同仁。",
+            fit: "适合关心“事项现在是什么状态”的用户——对他们来说，每一项的状态才是最重要的，哪天商讨的、哪天被记录下来的并不重要。",
+          },
+          {
+            label: "做法二",
+            title: "新建一份纪要",
+            description:
+              "纪要 2 是一份全新的纪要，每次会议的内容各自独立。",
+            fit: "适合在意“每次会议讲了什么”的用户——需要清楚知道哪一次会议讨论了哪些内容。",
+          },
+        ],
+        switching: {
+          heading: "切换方式",
+          paragraph:
+            "切换的方式很轻：每次新建纪要时，都会出现一个提示框，问要不要接着上一份纪要继续写。两种做法都保留，由用户在新建的当下按需求选择。",
+        },
+      },
       deepDive: {
         heading: "深潜一 —— Editor / Blockstruktur 结构化编辑器",
-        sheet: "03",
+        sheet: "04",
         label: "Editor",
+        decisionFigStart: 8,
         intro:
-          "板块3提到的两条子线，这里先看第一条——层级块结构本身已经解决了“怎么记录”的问题，但不代表每个能力都会被自然发现。下面这个真实反馈，正好出在这条缝隙里。",
+          "从会议页点开任意一份纪要，就进入 Editor。层级块结构已经解决了“怎么记录”的问题，但不代表每个能力都会被自然发现。下面这个真实反馈，正好出在这条缝隙里。",
         problem: {
           heading: "问题",
           paragraphs: [
